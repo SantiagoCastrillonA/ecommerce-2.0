@@ -2,8 +2,8 @@
 
 class Conexion{
     private $servidor = "localhost";
-    private $db = "quindisistem";
-    private $puerto = "3306";
+    private $db = "ecommerce";
+    private $puerto = "3307";
     private $charset = "utf8";
     private $user = "root";
     private $pass = "";

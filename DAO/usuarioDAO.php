@@ -1,7 +1,6 @@
 <?php
 include_once '../Conexion/Conexion.php';
 include_once '../Modelo/Usuario.php';
-include_once '../Modelo/PersonaCargo.php';
 include_once '../Modelo/Medicamento.php';
 include_once '../Modelo/Enfermedad.php';
 include_once '../Modelo/Alergia.php';
@@ -9,7 +8,6 @@ include_once '../Modelo/Cirugia.php';
 include_once '../Modelo/Lesion.php';
 include_once '../Modelo/Antecedente.php';
 include_once '../Modelo/Estudio.php';
-include_once '../Modelo/Curso.php';
 class UsuarioDAO
 {
      var $objetos;
@@ -22,7 +20,7 @@ class UsuarioDAO
 
      function loguearse(Usuario $obj)
      {
-          $sql = "SELECT U.id, U.nombre_completo, T.nombre_tipo, U.id_tipo_usuario, U.id_cargo, U.usuario_login, U.estado, C.nombre_cargo, T.estado AS estado_tipo_usuario, C.estado AS estado_cargo, U.id_area FROM usuarios U JOIN tipo_usuarios T ON U.id_tipo_usuario=T.id LEFT JOIN cargos C ON U.id_cargo=C.id  WHERE U.usuario_login=:usuario AND U.pass_login=:pass";
+          $sql = "SELECT U.id, U.nombre_completo, T.nombre_tipo, U.id_tipo_usuario, U.id_cargo, U.usuario_login, U.estado, C.nombre_cargo, T.estado AS estado_tipo_usuario, C.estado AS estado_cargo FROM usuarios U JOIN tipo_usuarios T ON U.id_tipo_usuario=T.id LEFT JOIN cargos C ON U.id_cargo=C.id  WHERE U.usuario_login=:usuario AND U.pass_login=:pass";
           $query = $this->acceso->prepare($sql);
           $query->execute(array(':usuario' => $obj->getUsuarioLogin(), ':pass' => $obj->getPassLogin()));
           $this->objetos = $query->fetchall();
@@ -31,7 +29,7 @@ class UsuarioDAO
 
      function datos($id)
      {
-          $sql = "SELECT U.id, U.estado, U.id_tipo_usuario, U.nombre_completo, U.genero, U.avatar, C.nombre_cargo, TU.nombre_tipo, C.id AS id_cargo, U.menu, U.id_sede, C.historias, C.soporte, U.id_area, A.nombre AS nombre_area FROM usuarios U LEFT JOIN cargos C ON U.id_cargo=C.id JOIN tipo_usuarios TU ON U.id_tipo_usuario=TU.id LEFT JOIN areas A ON U.id_area=A.id WHERE U.id=:id";
+          $sql = "SELECT U.id, U.estado, U.id_tipo_usuario, U.nombre_completo, U.genero, U.avatar, C.nombre_cargo, TU.nombre_tipo, C.id AS id_cargo, U.menu, U.id_sede, C.historias, C.soporte FROM usuarios U LEFT JOIN cargos C ON U.id_cargo=C.id JOIN tipo_usuarios TU ON U.id_tipo_usuario=TU.id WHERE U.id=:id";
           $query = $this->acceso->prepare($sql);
           $query->execute(array(':id' => $id));
           $this->objetos = $query->fetchall();
@@ -393,38 +391,6 @@ class UsuarioDAO
           }
      }
 
-     // Personas a Cargo
-
-     function crear_persona_a_cargo(PersonaCargo $obj)
-     {
-          $sql = "INSERT INTO usuario_personas_cargo (id_usuario, nombre, fecha_nac, parentezco) VALUES (:id_usuario, :nombre, :fecha_nac, :parentezco)";
-          $query = $this->acceso->prepare($sql);
-          if ($query->execute(array(':id_usuario' => $obj->getIdUsuario(), ':fecha_nac' => $obj->getFechaNac(), ':nombre' => $obj->getNombre(), ':parentezco' => $obj->getParentezco()))) {
-               echo 'creado';
-          } else {
-               echo 'Error al crear';
-          }
-     }
-
-     function eliminar_persona_a_cargo(PersonaCargo $obj)
-     {
-          $sql = "DELETE FROM usuario_personas_cargo WHERE id=:id";
-          $query = $this->acceso->prepare($sql);
-          if ($query->execute(array(':id' => $obj->getId()))) {
-               echo 'eliminado';
-          } else {
-               echo 'noEditado';
-          }
-     }
-
-     function listar_persona_a_cargo(PersonaCargo $obj)
-     {
-          $sql = "SELECT * FROM usuario_personas_cargo WHERE id_usuario=:id_usuario";
-          $query = $this->acceso->prepare($sql);
-          $query->execute(array(':id_usuario' => $obj->getIdUsuario()));
-          $this->objetos = $query->fetchall();
-          return $this->objetos;
-     }
 
      // Medicamentos
      function crear_medicamentos(Medicamento $obj)
@@ -644,38 +610,6 @@ class UsuarioDAO
      function listar_estudio(Estudio $obj)
      {
           $sql = "SELECT * FROM estudios WHERE id_usuario=:id_usuario";
-          $query = $this->acceso->prepare($sql);
-          $query->execute(array(':id_usuario' => $obj->getIdUsuario()));
-          $this->objetos = $query->fetchall();
-          return $this->objetos;
-     }
-
-     // Cursos
-     function crear_curso(Curso $obj)
-     {
-          $sql = "INSERT INTO cursos (id_usuario, fecha, institucion, descripcion, horas) VALUES (:id_usuario, :fecha, :institucion, :descripcion, :horas)";
-          $query = $this->acceso->prepare($sql);
-          if ($query->execute(array(':id_usuario' => $obj->getIdUsuario(), ':fecha' => $obj->getFecha(), ':institucion' => $obj->getInstitucion(), ':descripcion' => $obj->getDescripcion(), ':horas' => $obj->getHoras()))) {
-               echo 'creado';
-          } else {
-               echo 'Error al crear';
-          }
-     }
-
-     function eliminar_curso(Curso $obj)
-     {
-          $sql = "DELETE FROM cursos WHERE id=:id";
-          $query = $this->acceso->prepare($sql);
-          if ($query->execute(array(':id' => $obj->getId()))) {
-               echo 'eliminado';
-          } else {
-               echo 'noEditado';
-          }
-     }
-
-     function listar_curso(Curso $obj)
-     {
-          $sql = "SELECT * FROM cursos WHERE id_usuario=:id_usuario";
           $query = $this->acceso->prepare($sql);
           $query->execute(array(':id_usuario' => $obj->getIdUsuario()));
           $this->objetos = $query->fetchall();

@@ -1,1 +1,0 @@
-ALTER TABLE `usuario_solicitudes` ADD `observaciones_aprobador` TEXT NULL AFTER `id_aprobador`;

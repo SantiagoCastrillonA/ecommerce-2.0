@@ -1,1 +1,0 @@
-ALTER TABLE `usuarios` ADD `tipo_cuenta` VARCHAR(16) NULL AFTER `clave_email_institucional`, ADD `numero_cuenta` VARCHAR(128) NULL AFTER `tipo_cuenta`, ADD `banco` VARCHAR(128) NULL AFTER `numero_cuenta`;

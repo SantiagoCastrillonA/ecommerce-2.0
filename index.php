@@ -3,7 +3,7 @@
 
 <head>
     <?php
-    include 'Vista/front/header.php';
+    include 'Vista/front/head.php';
     ?>
 </head>
 <!-- body -->
@@ -11,62 +11,21 @@
 <body class="main-layout ">
     <!-- loader  -->
     <div class="loader_bg">
-        <div class="loader"><img src="images/loading.gif" alt="#" /></div>
+        <div class="loader"><img src="Recursos/img/loading.gif" alt="#" /></div>
     </div>
     <!-- end loader -->
     <!-- header -->
     <header>
-        <!-- header inner -->
-        <div class="header">
-
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col logo_section">
-                        <div class="full">
-                            <div class="center-desk">
-                                <div class="logo">
-                                    <a href="index.html"><img src="images/logo.png" alt="#"></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9">
-                        <div class="menu-area">
-                            <div class="limit-box">
-                                <nav class="main-menu">
-                                    <ul class="menu-area-main">
-                                        <li class="active"> <a href="index.html">Inicio</a> </li>
-                                        <li> <a href="about.html">Nosotros</a> </li>
-                                        <li><a href="brand.html">Marca</a></li>
-                                        <!--<li><a href="special.html">Especiales</a></li>-->
-                                        <li><a href="contact.html">Contáctanos</a></li>
-                                        <li class="last">
-                                            <a href="#"><img src="images/search_icon.png" alt="icon" /></a>
-                                        </li>
-                                    </ul>
-                                </nav>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 offset-md-6">
-                        <div class="location_icon_bottum">
-                            <ul>
-                                <li><img src="icon/call.png" />(+57)3010101101</li>
-                                <li><img src="icon/email.png" />correoPrueba@gmail.com</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- end header inner -->
+        <?php
+        include 'Vista/front/header.php';
+        ?>
     </header>
     <!-- end header -->
     <section class="slider_section">
         <div id="myCarousel" class="carousel slide banner-main" data-ride="carousel">
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img class="first-slide" src="images/banner.jpg" alt="First slide">
+                    <img class="first-slide" src="Recursos/img/banner.jpg" alt="First slide">
                     <div class="container">
                         <div class="carousel-caption relative">
                             <span>Nuestros Covers</span>
@@ -83,7 +42,7 @@
                     </div>
                 </div>
                 <div class="carousel-item">
-                    <img class="second-slide" src="images/banner1.jpg" alt="Second slide">
+                    <img class="second-slide" src="Recursos/img/banner1.jpg" alt="Second slide">
                     <div class="container">
                         <div class="carousel-caption relative">
                             <span>Nuestros Covers</span>
@@ -99,7 +58,7 @@
                     </div>
                 </div>
                 <div class="carousel-item">
-                    <img class="third-slide" src="images/banner2.jpg" alt="Third slide">
+                    <img class="third-slide" src="Recursos/img/banner2.jpg" alt="Third slide">
                     <div class="container">
                         <div class="carousel-caption relative">
                             <span>Nuestros Covers</span>
@@ -138,68 +97,68 @@
                 <div class="row">
                     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 margin">
                         <div class="brand_box">
-                            <img src="images/1.png" alt="img" />
+                            <img src="Recursos/img/1.png" alt="img" />
                             <h3>$<strong class="red">100</strong></h3>
                             <span>Cover</span>
-                            <i><img src="images/star.png"/></i>
-                            <i><img src="images/star.png"/></i>
-                            <i><img src="images/star.png"/></i>
-                            <i><img src="images/star.png"/></i>
+                            <i><img src="Recursos/img/star.png"/></i>
+                            <i><img src="Recursos/img/star.png"/></i>
+                            <i><img src="Recursos/img/star.png"/></i>
+                            <i><img src="Recursos/img/star.png"/></i>
                         </div>
                     </div>
                     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 margin">
                         <div class="brand_box">
-                            <img src="images/2.png" alt="img" />
+                            <img src="Recursos/img/2.png" alt="img" />
                             <h3>$<strong class="red">100</strong></h3>
                             <span>Cover</span>
-                            <i><img src="images/star.png"/></i>
-                            <i><img src="images/star.png"/></i>
-                            <i><img src="images/star.png"/></i>
-                            <i><img src="images/star.png"/></i>
+                            <i><img src="Recursos/img/star.png"/></i>
+                            <i><img src="Recursos/img/star.png"/></i>
+                            <i><img src="Recursos/img/star.png"/></i>
+                            <i><img src="Recursos/img/star.png"/></i>
                         </div>
                     </div>
                     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 margin">
                         <div class="brand_box">
-                            <img src="images/3.png" alt="img" />
+                            <img src="Recursos/img/3.png" alt="img" />
                             <h3>$<strong class="red">100</strong></h3>
                             <span>Cover</span>
-                            <i><img src="images/star.png"/></i>
-                            <i><img src="images/star.png"/></i>
-                            <i><img src="images/star.png"/></i>
-                            <i><img src="images/star.png"/></i>
+                            <i><img src="Recursos/img/star.png"/></i>
+                            <i><img src="Recursos/img/star.png"/></i>
+                            <i><img src="Recursos/img/star.png"/></i>
+                            <i><img src="Recursos/img/star.png"/></i>
                         </div>
                     </div>
                     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6">
                         <div class="brand_box">
-                            <img src="images/4.png" alt="img" />
+                            <img src="Recursos/img/4.png" alt="img" />
                             <h3>$<strong class="red">100</strong></h3>
                             <span>Cover</span>
-                            <i><img src="images/star.png"/></i>
-                            <i><img src="images/star.png"/></i>
-                            <i><img src="images/star.png"/></i>
-                            <i><img src="images/star.png"/></i>
+                            <i><img src="Recursos/img/star.png"/></i>
+                            <i><img src="Recursos/img/star.png"/></i>
+                            <i><img src="Recursos/img/star.png"/></i>
+                            <i><img src="Recursos/img/star.png"/></i>
                         </div>
                     </div>
                     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 mrgn">
                         <div class="brand_box">
-                            <img src="images/5.png" alt="img" />
+                            <img src="Recursos/img/5.png" alt="img" />
                             <h3>$<strong class="red">100</strong></h3>
                             <span>Cover</span>
-                            <i><img src="images/star.png"/></i>
-                            <i><img src="images/star.png"/></i>
-                            <i><img src="images/star.png"/></i>
-                            <i><img src="images/star.png"/></i>
+                            <i><img src="Recursos/img/star.png"/></i>
+                            <i><img src="Recursos/img/star.png"/></i>
+                            <i><img src="Recursos/img/star.png"/></i>
+                            <i><img src="Recursos/img/star.png"/></i>
                         </div>
                     </div>
                     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 mrgn">
                         <div class="brand_box">
-                            <img src="images/6.png" alt="img" />
+                            <img src="Recursos/img/6.png" alt="img" />
                             <h3>$<strong class="red">100</strong></h3>
                             <span>Cover</span>
-                            <i><img src="images/star.png"/></i>
-                            <i><img src="images/star.png"/></i>
-                            <i><img src="images/star.png"/></i>
-                            <i><img src="images/star.png"/></i>
+                            <i><img src="Recursos/img/star.png"/></i>
+                            <i><img src="Recursos/img/star.png"/></i>
+                            <i><img src="Recursos/img/star.png"/></i>
+                            <i><img src="Recursos/img/star.png"/></i>
                         </div>
                     </div>
                     <div class="col-md-12">
@@ -244,7 +203,7 @@
                                     <p>Hermosas fundas, y el servicio es espectacular, recomendado 100%</i>
                                     </p>
                                     <div class="full text_align_center margin_top_30">
-                                        <img src="icon/testimonial_qoute.png">
+                                        <img src="Recursos/img/icon/testimonial_qoute.png">
                                     </div>
                                 </div>
                             </div>
@@ -262,7 +221,7 @@
                                     <p>Encontré lo que estaba buscando </i>
                                     </p>
                                     <div class="full text_align_center margin_top_30">
-                                        <img src="icon/testimonial_qoute.png">
+                                        <img src="Recursos/img/icon/testimonial_qoute.png">
                                     </div>
                                 </div>
                             </div>
@@ -281,7 +240,7 @@
                                     <p>Maravilloso servicio, recomendado </i>
                                     </p>
                                     <div class="full text_align_center margin_top_30">
-                                        <img src="icon/testimonial_qoute.png">
+                                        <img src="Recursos/img/icon/testimonial_qoute.png">
                                     </div>
                                 </div>
                             </div>
@@ -330,42 +289,9 @@
 
     <!-- footer -->
     <footer>
-        <div id="contact" class="footer">
-            <div class="container">
-                <div class="row pdn-top-30">
-                    <div class="col-md-12 ">
-                        <div class="footer-box">
-                            <div class="headinga">
-                                <h3>Dirección</h3>
-                                <span>Armenia, Quindío</span>
-                                <p>(+57) 322 20 10 30
-                                    <br>demo@gmail.com</p>
-                            </div>
-                            <ul class="location_icon">
-                                <li> <a href="#"><i class="fa fa-facebook-f"></i></a></li>
-                                <li> <a href="#"><i class="fa fa-twitter"></i></a></li>
-                                <li> <a href="#"><i class="fa fa-instagram"></i></a></li>
-
-                            </ul>
-                            <div class="menu-bottom">
-                                <ul class="link">
-                                    <li> <a href="#">Inicio</a></li>
-                                    <li> <a href="#">Nosotros</a></li>
-                                    
-                                    <li> <a href="#">Marca </a></li>
-                                    <li> <a href="#"> Contáctanos</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="copyright">
-                <div class="container">
-                    <p>© Santiago Castrillón <a href="https://github.com/SantiagoCastrillonA"> Github</a></p>
-                </div>
-            </div>
-        </div>
+    <?php
+    include 'Vista/front/footer.php';
+    ?>
     </footer>
     <?php
     include 'Vista/front/scripts.php';

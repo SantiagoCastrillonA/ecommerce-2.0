@@ -1,0 +1,98 @@
+<?php
+require '../vendor/autoload.php'; // Incluye el archivo de autoloading de Composer
+
+use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
+use Mike42\Escpos\Printer;
+use Mike42\Escpos\EscposImage;
+use Mike42\Escpos\PrintConnectors\FilePrintConnector;
+
+include_once '../Conexion/consulSQL.php';
+$sqlEmpresa = "SELECT C.nombre, C.direccion, C.logo, C.email, C.nit, C.tel_contacto, C.impresora FROM configuracion C";
+$vecEmpresa = mysqli_fetch_row(ejecutarSQL::consultar($sqlEmpresa));
+$sqlPedido = "SELECT DAY(P.fecha_hora) AS dia, MONTH(P.fecha_hora) AS mes, YEAR(P.fecha_hora) AS ano, M.nombre, P.id AS id_pedido, P.fecha_hora, PP.valor_pagado, PP.valor_servicio, PP.tipo_pago, PP.comprobante, PP.dinero_recibido, PP.propina
+FROM pagos_pedidos PP JOIN pedidos P ON PP.id_pedido=P.id JOIN mesas M ON P.id_mesa=M.id 
+WHERE PP.id=" . $_GET['id'];
+$vecPedido = mysqli_fetch_row(ejecutarSQL::consultar($sqlPedido));
+$productos = ejecutarSQL::consultar("SELECT PR.nombre, PR.precio, PP.cantidad FROM pagos_pedidos PA JOIN pedidos P ON PA.id_pedido=P.id JOIN producto_pedido PP ON PP.id_pago=PA.id JOIN productos PR ON PP.id_producto=PR.id WHERE PA.id=" . $_GET['id']);
+
+// // Ruta de la impresora
+$printerName = $vecEmpresa[6]; // Cambia esto por el nombre de tu impresora en Windows
+
+// // Crear un conector para la impresora POS
+$connector = new WindowsPrintConnector($printerName);
+
+// // Crear una instancia de la impresora
+$printer = new Printer($connector);
+
+try {
+    $printer->setJustification(Printer::JUSTIFY_CENTER);
+
+
+    $printer->text("\n");
+    $printer->text($vecEmpresa[0]."\n");
+    $printer->text('Nit: '.$vecEmpresa[4]."\n");
+    $printer->text($vecEmpresa[1]."\n");
+    $printer->text('Tel. '.$vecEmpresa[5]."\n");
+
+    // Información del pedido
+    $printer->text("--------------------------------\n");
+    $printer->text("Pedido No. ".$vecPedido[4] . ":\n");
+    $printer->text("Fecha: " . $vecPedido[2] . "-" . $vecPedido[1] . "-" . $vecPedido[0] . "\n");
+    $printer->text("--------------------------------\n");
+
+    if (mysqli_num_rows($productos) > 0) {
+        $printer->setJustification(Printer::JUSTIFY_LEFT);
+        $printer->text("Cant Prod  PUnit Valor\n");
+        $printer->text("--------------------------------\n");
+        $total = 0;
+        $dineroRecibido = 0;
+        while ($producto = mysqli_fetch_array($productos)) {
+            $total = $total + ($producto['cantidad'] * $producto['precio']);
+            $printer->text(" " . $producto['cantidad'] . "   " . $producto['nombre'] . "   \n                $" . $producto['precio'] . '  $' . ($producto['cantidad'] * $producto['precio']) . "\n");            
+        }
+        if ($vecPedido[7] > 0) {
+            $valorServicio = $total * $vecPedido[7] / 100;
+            $printer->text(" 1    Servicio" . "  " . $vecPedido[7] . '%     $' . ($total * $vecPedido[7] / 100) . "\n");
+            $total = $total + $valorServicio;
+        }
+        if($vecPedido[11]<>0){
+            $printer->text("             Propina    $".($vecPedido[11])." \n");
+        }
+        $printer->text("--------------------------------\n");
+        $printer->text("             TOTAL:     $". $vecPedido[6]." \n");
+        $comprobante = "";
+        if( $vecPedido[8]==1){
+            $pago = 'Efectivo';
+        }
+        if( $vecPedido[8]==2){
+            $pago = 'Transferencia'; 
+            $comprobante = '  Comprobante: '.$vecPedido[9];
+        }
+        if( $vecPedido[8]==3){
+            $pago = 'Tarjeta Debito';
+            $comprobante = '  Comprobante: '.$vecPedido[9];
+        }
+        if( $vecPedido[8]==4){
+            $pago = 'Tarjeta Credito';
+            $comprobante = '  Comprobante: '.$vecPedido[9];
+        }
+        if($pago=='Efectivo'){
+            $printer->text("  Pago en ".$pago."      $".$vecPedido[10]." \n");
+            $printer->text("               Cambio   $".($vecPedido[10]-$vecPedido[6])." \n");
+        }else{
+            $printer->text("  Pago en ".$pago."\n");
+        }        
+        
+        $printer->setJustification(Printer::JUSTIFY_CENTER);
+        $printer->text("--------------------------------\n");
+        $printer->text("GRACIAS POR SU COMPRA\n");
+        $printer->text("--------------------------------\n");
+    }
+
+    $printer->text("\n\n");
+    $printer->cut();
+    $printer->close();
+} finally {
+    // Cerrar la conexión a la impresora
+    $printer->close();
+}

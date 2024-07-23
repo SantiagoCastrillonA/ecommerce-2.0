@@ -29,7 +29,7 @@ class UsuarioDAO
 
      function datos($id)
      {
-          $sql = "SELECT U.id, U.estado, U.id_tipo_usuario, U.nombre_completo, U.genero, U.avatar, C.nombre_cargo, TU.nombre_tipo, C.id AS id_cargo, U.menu, U.id_sede, C.historias, C.soporte FROM usuarios U LEFT JOIN cargos C ON U.id_cargo=C.id JOIN tipo_usuarios TU ON U.id_tipo_usuario=TU.id WHERE U.id=:id";
+          $sql = "SELECT U.id, U.estado, U.id_tipo_usuario, U.nombre_completo, U.genero, U.avatar, C.nombre_cargo, TU.nombre_tipo, C.id AS id_cargo, U.menu, U.id_sede FROM usuarios U LEFT JOIN cargos C ON U.id_cargo=C.id JOIN tipo_usuarios TU ON U.id_tipo_usuario=TU.id WHERE U.id=:id";
           $query = $this->acceso->prepare($sql);
           $query->execute(array(':id' => $id));
           $this->objetos = $query->fetchall();
@@ -68,7 +68,6 @@ class UsuarioDAO
                     LEFT JOIN tipo_usuarios T ON U.id_tipo_usuario=T.id 
                     LEFT JOIN municipios M ON U.ciudad_residencia=M.id 
                     LEFT JOIN departamentos D ON M.departamento_id=D.id LEFT JOIN sedes S ON U.id_sede=S.id 
-                    LEFT JOIN areas A ON U.id_area=A.id
                     WHERE U.id<>1 AND (U.nombre_completo LIKE :consulta OR U.telefono LIKE :consulta OR D.nombre LIKE :consulta OR M.nombre LIKE :consulta OR T.nombre_tipo LIKE :consulta ) " . $condicion . " ORDER BY U.nombre_completo ASC";
                $consulta = $_POST['consulta'];
                $query = $this->acceso->prepare($sql);
@@ -81,7 +80,6 @@ class UsuarioDAO
                     LEFT JOIN tipo_usuarios T ON U.id_tipo_usuario=T.id 
                     LEFT JOIN municipios M ON U.ciudad_residencia=M.id 
                     LEFT JOIN departamentos D ON M.departamento_id=D.id LEFT JOIN sedes S ON U.id_sede=S.id 
-                    LEFT JOIN areas A ON U.id_area=A.id
                     WHERE U.id<>1 AND U.nombre_completo NOT LIKE '' " . $condicion . " ORDER BY U.nombre_completo ASC";
                $query = $this->acceso->prepare($sql);
                $query->execute();
@@ -102,13 +100,13 @@ class UsuarioDAO
 
      function crear_usuario(Usuario $obj)
      {
-          $sql = "INSERT INTO usuarios(estado, id_cargo, id_tipo_usuario, nombre_completo, doc_id, direccion, telefono, avatar, usuario_login, pass_login, email, fecha_creacion, ciudad_residencia, id_sede, id_area) 
-        VALUES (:estado, :id_cargo, :id_tipo_usuario, :nombre_completo, :doc_id, :direccion, :telefono, :avatar, :usuario_login, :pass_login, :email, :fecha_creacion, :ciudad_residencia, :id_sede, :id_area)";
+          $sql = "INSERT INTO usuarios(estado, id_cargo, id_tipo_usuario, nombre_completo, doc_id, direccion, telefono, avatar, usuario_login, pass_login, email, fecha_creacion, ciudad_residencia) 
+        VALUES (:estado, :id_cargo, :id_tipo_usuario, :nombre_completo, :doc_id, :direccion, :telefono, :avatar, :usuario_login, :pass_login, :email, :fecha_creacion, :ciudad_residencia)";
           $query = $this->acceso->prepare($sql);
           if ($query->execute(array(
                ':estado' => $obj->getEstado(), ':id_cargo' => $obj->getIdCargo(), ':id_tipo_usuario' => $obj->getIdTipoUsuario(), ':nombre_completo' => $obj->getNombreCompleto(),
                ':doc_id' => $obj->getDocId(), ':direccion' => $obj->getDireccion(), ':telefono' => $obj->getTelefono(), ':avatar' => $obj->getAvatar(), ':usuario_login' => $obj->getUsuarioLogin(),
-               ':pass_login' => $obj->getPassLogin(), ':email' => $obj->getEmail(), ':fecha_creacion' => $obj->getFechaCreacion(), ':ciudad_residencia' => $obj->getCiudadResidencia(), ':id_sede' => $obj->getIdSede(), ':id_area' => $obj->getIdArea()
+               ':pass_login' => $obj->getPassLogin(), ':email' => $obj->getEmail(), ':fecha_creacion' => $obj->getFechaCreacion(), ':ciudad_residencia' => $obj->getCiudadResidencia()
           ))) {
                echo 'create';
           } else {
@@ -166,7 +164,7 @@ class UsuarioDAO
 
      function cargarCc(Usuario $obj)
      {
-          $sql = "SELECT U.doc_id, U.id_tipo_usuario, U.id_cargo, U.nombre_completo, U.id_sede, U.id_area, U.email FROM usuarios U WHERE U.id=:id";
+          $sql = "SELECT U.doc_id, U.id_tipo_usuario, U.id_cargo, U.nombre_completo, U.email FROM usuarios U WHERE U.id=:id";
           $query = $this->acceso->prepare($sql);
           $query->execute(array(':id' => $obj->getId()));
           $this->objetos = $query->fetchall();
@@ -175,9 +173,9 @@ class UsuarioDAO
 
      function update_cc(Usuario $obj)
      {
-          $sql2 = "UPDATE usuarios SET doc_id=:doc, id_tipo_usuario=:id_tipo_usuario, id_cargo=:id_cargo, id_sede=:id_sede, id_area=:id_area  WHERE id=:id";
+          $sql2 = "UPDATE usuarios SET doc_id=:doc, id_tipo_usuario=:id_tipo_usuario, id_cargo=:id_cargo  WHERE id=:id";
           $query2 = $this->acceso->prepare($sql2);
-          if ($query2->execute(array(':id' => $obj->getId(), ':doc' => $obj->getDocId(), ':id_tipo_usuario' => $obj->getIdTipoUsuario(), ':id_cargo' => $obj->getIdCargo(), ':id_sede' => $obj->getIdSede(), ':id_area' => $obj->getIdArea()))) {
+          if ($query2->execute(array(':id' => $obj->getId(), ':doc' => $obj->getDocId(), ':id_tipo_usuario' => $obj->getIdTipoUsuario(), ':id_cargo' => $obj->getIdCargo()))) {
                echo 'update';
           } else {
                echo "Error al actualizar los datos";
@@ -189,8 +187,8 @@ class UsuarioDAO
           $sql = "SELECT IF(U.id_tipo_usuario=1, (SELECT C.fecha_hora FROM conexiones C WHERE C.id_usuario=:id ORDER BY C.id DESC LIMIT 1), 'N/A') AS conexion, T.nombre_tipo, U.avatar, U.nombre_completo, U.direccion, M.nombre AS municipio, D.nombre AS depto, U.telefono, U.fecha_nacimiento, TIMESTAMPDIFF(YEAR,U.fecha_nacimiento,CURDATE()) AS edad, 
                U.genero, U.doc_id, U.email, U.inf_usuario, U.estado, U.fecha_creacion, U.facebook, U.instagram, U.youtube, U.tiktok, U.inf_usuario, CA.nombre_cargo, U.id_tipo_usuario, U.firma_digital, U.usuario_login, CA.descripcion, U.ciudad_residencia, U.contacto_emergencia, U.parentezco_contacto, U.telefono_contacto, U.eps, U.tipo_sangre, U.nivel_academico,
                U.profesion, U.experiencia, U.fondo, U.cesantias, U.nombre_madre, U.telefono_madre, U.nombre_padre, U.telefono_padre, U.estrato, U.estado_civil, U.grupo_etnico, U.personas_cargo, U.cabeza_familia, U.hijos, U.fuma, U.fuma_frecuencia, U.bebidas, U.bebidas_frecuencia, U.deporte, U.talla_camisa, U.talla_pantalon, U.talla_calzado, U.tipo_vivienda, 
-               U.licencia_conduccion, U.licencia_descr, U.act_tiempo_libre, CA.nombre_cargo, S.nombre AS nombre_sede, U.id_sede, U.id_area, A.nombre AS nombre_area, U.arl, U.correo_institucional, U.clave_email_institucional, U.tipo_cuenta, U.numero_cuenta, U.banco, CA.descripcion AS funciones
-               FROM usuarios U JOIN tipo_usuarios T ON U.id_tipo_usuario=T.id JOIN municipios M ON U.ciudad_residencia=M.id JOIN departamentos D ON M.departamento_id=D.id JOIN cargos CA ON U.id_cargo=CA.id LEFT JOIN sedes S ON U.id_sede=S.id LEFT JOIN areas A ON U.id_area=A.id WHERE U.id=:id";
+               U.licencia_conduccion, U.licencia_descr, U.act_tiempo_libre, CA.nombre_cargo, U.arl, U.correo_institucional, U.clave_email_institucional, U.tipo_cuenta, U.numero_cuenta, U.banco, CA.descripcion AS funciones
+               FROM usuarios U JOIN tipo_usuarios T ON U.id_tipo_usuario=T.id JOIN municipios M ON U.ciudad_residencia=M.id JOIN departamentos D ON M.departamento_id=D.id JOIN cargos CA ON U.id_cargo=CA.id WHERE U.id=:id";
           $query = $this->acceso->prepare($sql);
           $query->execute(array(':id' => $obj->getId()));
           $this->objetos = $query->fetchall();
@@ -311,31 +309,6 @@ class UsuarioDAO
           $sql = "SELECT U.menu FROM usuarios U WHERE U.id=:id";
           $query = $this->acceso->prepare($sql);
           $query->execute(array(':id' => $obj->getId()));
-          $this->objetos = $query->fetchall();
-          return $this->objetos;
-     }
-
-     function actualizar_calendario(Usuario $obj)
-     {
-          $sql = "UPDATE usuarios SET calendar=:calendar WHERE id=:id";
-          $query = $this->acceso->prepare($sql);
-          $query->execute(array(':id' => $obj->getId(), ':calendar' => $obj->getCalendar()));
-     }
-
-     function buscar_calendario(Usuario $obj)
-     {
-          $sql = "SELECT U.calendar FROM usuarios U WHERE U.id=:id";
-          $query = $this->acceso->prepare($sql);
-          $query->execute(array(':id' => $obj->getId()));
-          $this->objetos = $query->fetchall();
-          return $this->objetos;
-     }
-
-     function activosEmail()
-     {
-          $sql = "SELECT U.email FROM usuarios U WHERE U.estado=1 AND (U.id_cargo<=4 OR U.id_tipo_usuario<=2)";
-          $query = $this->acceso->prepare($sql);
-          $query->execute();
           $this->objetos = $query->fetchall();
           return $this->objetos;
      }
@@ -643,33 +616,7 @@ class UsuarioDAO
           $this->objetos = $query->fetchall();
           return $this->objetos;
      }
-
-     function vacacionesAutogestion($id_usuario)
-     {
-
-          $sql = "SELECT (SELECT SUM(S1.cantidad) FROM usuario_solicitudes S1 WHERE S1.tipo='Vacaciones' AND S1.estado=2 AND S1.id_usuario=$id_usuario AND S1.fecha_inicial <= NOW()) AS disfrutados,
-          (SELECT SUM(CD.dias) FROM usuario_compensacion C JOIN compensacion_detalle CD ON CD.id_compensacion=C.id WHERE C.fecha_creacion<= NOW() AND CD.tipo='Compensado' AND C.id_usuario=$id_usuario) AS compensados,
-          (SELECT S1.cantidad FROM usuario_solicitudes S1 WHERE S1.tipo='Vacaciones' AND S1.estado=2 AND S1.id_usuario=$id_usuario AND S1.fecha_inicial <= NOW() ORDER BY S.id DESC LIMIT 1) AS ultimos_disfrutados,
-          (SELECT S1.fecha_final FROM usuario_solicitudes S1 WHERE S1.tipo='Vacaciones' AND S1.estado=2 AND S1.id_usuario=$id_usuario AND S1.fecha_inicial <= NOW() ORDER BY S.id DESC LIMIT 1)  AS ultimas_vacaciones,
-          (SELECT DATEDIFF(NOW(), C.fecha_inicio) FROM contratos C WHERE C.id_usuario = $id_usuario AND C.estado = 1 ) AS dias_contratado,
-          (SELECT  FLOOR(TIMESTAMPDIFF(MONTH, C.fecha_inicio, NOW()) / 12) FROM contratos C WHERE C.id_usuario = $id_usuario AND C.estado = 1 AND (C.tipo_contrato = 'Término Indefinido' OR C.tipo_contrato ='Término Definido')) AS periodos,
-          (SELECT FLOOR(TIMESTAMPDIFF(MONTH, C.fecha_inicio, NOW()) * 1.3) FROM contratos C WHERE C.id_usuario = $id_usuario AND C.estado = 1 AND (C.tipo_contrato = 'Término Indefinido' OR C.tipo_contrato ='Término Definido')) AS dias_acumulados,
-          (SELECT DATEDIFF(DATE_ADD(C.fecha_inicio, INTERVAL FLOOR(TIMESTAMPDIFF(MONTH, C.fecha_inicio, NOW()) / 12) + 1 YEAR), NOW()) FROM contratos C WHERE C.id_usuario = $id_usuario AND C.estado = 1 AND (C.tipo_contrato = 'Término Indefinido' OR C.tipo_contrato ='Término Definido')) AS dias_nuevo_periodo 
-          FROM usuario_solicitudes S GROUP BY disfrutados, compensados, ultimos_disfrutados, dias_contratado, periodos, dias_acumulados, dias_nuevo_periodo";
-          $query = $this->acceso->prepare($sql);
-          $query->execute();
-          $this->objetos = $query->fetchall();
-          return $this->objetos;
-     }
-
-     function buscarUsersTalentoHumanoFull()
-     {
-          $sql = "SELECT U.nombre_completo, U.email, C.nombre_cargo FROM usuarios U JOIN cargos C ON U.id_cargo=C.id JOIN modulos_cargos MC ON MC.id_cargo=C.id WHERE MC.id_modulo=10 AND MC.crear=1 AND MC.editar=1";
-          $query = $this->acceso->prepare($sql);
-          $query->execute();
-          $this->objetos = $query->fetchall();
-          return $this->objetos;
-     }
+     
 
      function buscarUsersConfiguracionFull()
      {
@@ -680,88 +627,9 @@ class UsuarioDAO
           return $this->objetos;
      }
 
-     function buscarUsersContratosFull()
-     {
-          $sql = "SELECT U.nombre_completo, U.email, C.nombre_cargo FROM usuarios U JOIN cargos C ON U.id_cargo=C.id JOIN modulos_cargos MC ON MC.id_cargo=C.id WHERE MC.id_modulo=11 AND MC.crear=1 AND MC.editar=1";
-          $query = $this->acceso->prepare($sql);
-          $query->execute();
-          $this->objetos = $query->fetchall();
-          return $this->objetos;
-     }
-
      function listarActivos()
      {
           $sql = "SELECT U.nombre_completo, U.email, U.avatar, U.id, U.doc_id FROM usuarios U WHERE U.estado=1 AND U.id<>1";
-          $query = $this->acceso->prepare($sql);
-          $query->execute();
-          $this->objetos = $query->fetchall();
-          return $this->objetos;
-     }
-
-     function buscarUsersEncuestas()
-     {
-          $sql = "SELECT U.nombre_completo, U.email, C.nombre_cargo FROM usuarios U JOIN cargos C ON U.id_cargo=C.id JOIN modulos_cargos MC ON MC.id_cargo=C.id WHERE MC.id_modulo=16 AND MC.crear=1 AND MC.editar=1";
-          $query = $this->acceso->prepare($sql);
-          $query->execute();
-          $this->objetos = $query->fetchall();
-          return $this->objetos;
-     }
-
-     function buscarUsersBodega()
-     {
-          $sql = "SELECT U.nombre_completo, U.email, C.nombre_cargo FROM usuarios U JOIN cargos C ON U.id_cargo=C.id WHERE C.id=9 OR C.id=3";
-          $query = $this->acceso->prepare($sql);
-          $query->execute();
-          $this->objetos = $query->fetchall();
-          return $this->objetos;
-     }
-
-     function buscarUsersSalasServicio()
-     {
-          $sql = "SELECT U.nombre_completo, U.email, C.nombre_cargo FROM usuarios U JOIN cargos C ON U.id_cargo=C.id WHERE C.id=4";
-          $query = $this->acceso->prepare($sql);
-          $query->execute();
-          $this->objetos = $query->fetchall();
-          return $this->objetos;
-     }
-
-     function buscarUsersJefeRecursoHumano()
-     {
-          $sql = "SELECT U.nombre_completo, U.email, C.nombre_cargo FROM usuarios U JOIN cargos C ON U.id_cargo=C.id WHERE C.id=6";
-          $query = $this->acceso->prepare($sql);
-          $query->execute();
-          $this->objetos = $query->fetchall();
-          return $this->objetos;
-     }
-
-     function cargarPorDocumento(Usuario $obj)
-     {
-          $sql = "SELECT U.doc_id, U.id_tipo_usuario, U.id_cargo, U.nombre_completo, U.id_sede, U.email FROM usuarios U WHERE U.doc_id=:doc_id";
-          $query = $this->acceso->prepare($sql);
-          $query->execute(array(':doc_id' => $obj->getDocId()));
-          $this->objetos = $query->fetchall();
-          return $this->objetos;
-     }
-     function morosos()
-     {
-          $sql = "SELECT S.nombre AS nombre_sede, 
-                              C.nombre_cargo, 
-                              U.nombre_completo, 
-                              U.doc_id,
-                              IF (IFNULL(U.direccion, '') != '' AND IFNULL(U.telefono, '') != '' AND IFNULL(U.fecha_nacimiento, '') != '' AND IFNULL(U.genero, '') != '', 1, 0) AS personal,
-                              IF (IFNULL(U.nombre_madre, '') != '' AND IFNULL(U.nombre_padre, '') != '', 1, 0) AS familiar,
-                              IF (IFNULL(U.tipo_sangre, '') != '' AND IFNULL(U.eps, '') != '' AND IFNULL(U.contacto_emergencia, '') != '' AND IFNULL(U.telefono_contacto, '') != '', 1, 0) AS salud,
-                              IF (IFNULL(U.nivel_academico, '') != '' AND IFNULL(U.profesion, '') != '' AND IFNULL(U.experiencia, '') != '', 1, 0) AS academica,
-                              (SELECT COUNT(I.id) FROM estudios I WHERE I.id_usuario = U.id) AS estudios,
-                              IF (IFNULL(U.estrato, '') != '' AND IFNULL(U.estado_civil, '') != '' AND IFNULL(U.grupo_etnico, '') != '' AND IFNULL(U.personas_cargo, '') != '' AND IFNULL(U.cabeza_familia, '') != '' AND IFNULL(U.hijos, '') != '' AND IFNULL(U.fuma, '') != '' AND IFNULL(U.bebidas, '') != '' AND IFNULL(U.talla_camisa, '') != '' AND IFNULL(U.talla_pantalon, '') != '' AND IFNULL(U.talla_calzado, '') != '' AND IFNULL(U.tipo_vivienda, '') != '' AND IFNULL(U.licencia_conduccion, '') != '', 1, 0) AS sociodemografica,
-                              CONCAT('<a href=\'../Vista/usuario.php?id=', U.id, '&modulo=usuarios\'><button class=\'state btn btn-sm btn-success mr-1\' type=\'button\' title=\'Ver Perfil\'><i class=\'fas fa-address-card\'></i></button></a>') AS boton
-                    FROM usuarios U 
-                    LEFT JOIN sedes S ON U.id_sede = S.id 
-                    LEFT JOIN cargos C ON U.id_cargo = C.id 
-                    WHERE U.id <> 1 AND U.estado = 1
-                    ORDER BY U.nombre_completo;
-   
-           ";
           $query = $this->acceso->prepare($sql);
           $query->execute();
           $this->objetos = $query->fetchall();
@@ -780,6 +648,7 @@ class UsuarioDAO
           $this->objetos = $query->fetchall();
           return $this->objetos;
      }
+     
      function usuariosPorSedes()
      {
           $sql = "SELECT C.nombre  AS valor, COUNT(U.id) AS cantidad_usuarios

@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 4.7.0
 -- https://www.phpmyadmin.net/
 --
--- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 15-05-2024 a las 20:47:27
--- Versión del servidor: 10.11.7-MariaDB-cll-lve
--- Versión de PHP: 7.2.34
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 23-07-2024 a las 16:36:43
+-- Versión del servidor: 10.1.25-MariaDB
+-- Versión de PHP: 7.1.7
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -18,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `u144865085_quindisistem`
+-- Base de datos: `castri`
 --
 
 -- --------------------------------------------------------
@@ -32,7 +33,7 @@ CREATE TABLE `alergias` (
   `id_usuario` int(11) NOT NULL,
   `tipo` varchar(100) NOT NULL,
   `nombre` varchar(200) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -44,7 +45,7 @@ CREATE TABLE `antecedentes` (
   `id` int(11) NOT NULL,
   `id_usuario` int(11) NOT NULL,
   `nombre` varchar(150) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -55,12 +56,12 @@ CREATE TABLE `antecedentes` (
 CREATE TABLE `cargos` (
   `id` int(2) NOT NULL,
   `nombre_cargo` varchar(64) NOT NULL,
-  `descripcion` text DEFAULT NULL,
+  `descripcion` text,
   `estado` int(1) NOT NULL,
-  `historias` int(1) NOT NULL DEFAULT 1,
-  `soporte` int(1) NOT NULL DEFAULT 1,
-  `id_jefe` int(11) NOT NULL DEFAULT 3
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+  `historias` int(1) NOT NULL DEFAULT '1',
+  `soporte` int(1) NOT NULL DEFAULT '1',
+  `id_jefe` int(11) NOT NULL DEFAULT '3'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `cargos`
@@ -69,20 +70,7 @@ CREATE TABLE `cargos` (
 INSERT INTO `cargos` (`id`, `nombre_cargo`, `descripcion`, `estado`, `historias`, `soporte`, `id_jefe`) VALUES
 (1, 'Super Administrador', NULL, 1, 1, 1, 3),
 (2, 'Administrador Sistema', NULL, 1, 1, 1, 3),
-(3, 'Gerente', 'Aqui las funciones de la gerencia', 1, 1, 1, 3),
-(4, 'Coordinador@ Administrativ@ de Salas', '', 1, 1, 1, 3),
-(5, 'Coordinador@ Administrativ@ y Contable', '', 1, 1, 1, 12),
-(6, 'Jefe de Recursos Humanos', 'Funciones del cargo de jefe de recursos humanos', 1, 1, 1, 3),
-(7, 'Asistente de Gerencia', '', 1, 0, 0, 3),
-(8, 'Tesoreria y Suministros', '', 1, 0, 0, 3),
-(9, 'Jefe de Bodega y logística', '', 1, 1, 1, 3),
-(10, 'Ejecutivo Comercial Externo', '', 1, 0, 0, 3),
-(11, 'Auxiliar Administrativ@', '', 1, 0, 0, 4),
-(12, 'Contador', '', 1, 0, 0, 3),
-(13, 'Seguridad y Salud en el Trabajo', '', 1, 0, 0, 3),
-(14, 'Conductor', '', 1, 0, 0, 3),
-(15, 'Asesor Comercial', '', 1, 0, 0, 4),
-(16, 'Auxiliar de Bodega', '', 1, 0, 0, 9);
+(3, 'Gerente', 'Aqui las funciones de la gerencia', 1, 1, 1, 3);
 
 -- --------------------------------------------------------
 
@@ -94,54 +82,7 @@ CREATE TABLE `cirugias` (
   `id` int(11) NOT NULL,
   `id_usuario` int(11) NOT NULL,
   `nombre` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `colaboradores_mes`
---
-
-CREATE TABLE `colaboradores_mes` (
-  `id` int(11) NOT NULL,
-  `id_usuario` int(11) NOT NULL,
-  `id_autor` int(11) NOT NULL,
-  `mes` varchar(16) NOT NULL,
-  `ano` int(4) NOT NULL,
-  `tipo` varchar(64) NOT NULL,
-  `mes_num` int(2) NOT NULL,
-  `mensaje` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `comentario_historia`
---
-
-CREATE TABLE `comentario_historia` (
-  `id` int(11) NOT NULL,
-  `id_autor` int(8) NOT NULL,
-  `id_historia` int(11) NOT NULL,
-  `comentario` text NOT NULL,
-  `fecha_hora` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `compensacion_detalle`
---
-
-CREATE TABLE `compensacion_detalle` (
-  `id` int(11) NOT NULL,
-  `id_compensacion` int(11) NOT NULL,
-  `id_autor` int(11) NOT NULL,
-  `fecha_creacion` date NOT NULL,
-  `dias` int(2) NOT NULL,
-  `tipo` varchar(32) NOT NULL,
-  `descripcion` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -153,7 +94,7 @@ CREATE TABLE `conexiones` (
   `id` int(8) NOT NULL,
   `fecha_hora` datetime NOT NULL,
   `id_usuario` int(8) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -164,56 +105,31 @@ CREATE TABLE `conexiones` (
 CREATE TABLE `configuracion` (
   `id` int(11) NOT NULL,
   `nombre` varchar(64) DEFAULT NULL,
-  `logo` text DEFAULT NULL,
-  `logo_blanco` text DEFAULT NULL,
-  `faticon` text DEFAULT NULL,
-  `img_login` text DEFAULT NULL,
+  `logo` text,
+  `logo_blanco` text,
+  `faticon` text,
+  `img_login` text,
   `driver` varchar(8) DEFAULT NULL,
   `cifrado` varchar(8) DEFAULT NULL,
   `host` varchar(128) DEFAULT NULL,
   `port` int(4) DEFAULT NULL,
   `email` varchar(128) DEFAULT NULL,
-  `pass_email` text DEFAULT NULL,
-  `url_back` text DEFAULT NULL,
-  `url_front` text DEFAULT NULL,
+  `pass_email` text,
+  `url_back` text,
+  `url_front` text,
   `hosting` date DEFAULT NULL,
   `nit` varchar(16) DEFAULT NULL,
   `email_carta` varchar(128) DEFAULT NULL,
   `direccion` varchar(128) DEFAULT NULL,
   `tel_contacto` varchar(128) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `configuracion`
 --
 
 INSERT INTO `configuracion` (`id`, `nombre`, `logo`, `logo_blanco`, `faticon`, `img_login`, `driver`, `cifrado`, `host`, `port`, `email`, `pass_email`, `url_back`, `url_front`, `hosting`, `nit`, `email_carta`, `direccion`, `tel_contacto`) VALUES
-(1, 'QuindiPisos', '662ada5b8c45b-logo_nuevo.png', '662ada66c614d-logo_nuevo.png', '662ada81562f2-icono.png', NULL, 'smtp', 'SSL', 'smtp.hostinger.com', 465, 'quindisistem@quindipisos.com', 'Quindisistem2024*', 'http://localhost/', 'https://quindipisos.com/', '2024-04-21', '801.139.454-3', 'nomina@quindipisos.com', 'Villa Carolina 1 etapa mz i casa 24', '3136464151 ext 15');
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `contratos`
---
-
-CREATE TABLE `contratos` (
-  `id` int(11) NOT NULL,
-  `id_contrato` varchar(16) NOT NULL,
-  `id_usuario` int(11) NOT NULL,
-  `id_autor` int(11) NOT NULL,
-  `id_cargo` int(11) NOT NULL,
-  `fecha_creacion` date NOT NULL,
-  `fecha_inicio` date DEFAULT NULL,
-  `fecha_finalizacion` date DEFAULT NULL,
-  `tipo_contrato` varchar(64) DEFAULT NULL,
-  `salario` float DEFAULT 0,
-  `duracion` varchar(128) DEFAULT NULL,
-  `jornada_laboral` varchar(128) DEFAULT NULL,
-  `horario` varchar(255) DEFAULT NULL,
-  `adjunto` text DEFAULT NULL,
-  `estado` int(1) NOT NULL DEFAULT 1,
-  `motivo_terminacion` text DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+(1, 'Ecommerce', '662ada5b8c45b-logo_nuevo.png', '662ada66c614d-logo_nuevo.png', '662ada81562f2-icono.png', NULL, 'smtp', 'SSL', 'smtp.hostinger.com', 465, 'quindisistem@quindipisos.com', 'Quindisistem2024*', 'http://localhost/', 'https://quindipisos.com/', '2024-04-21', '801.139.454-3', 'nomina@quindipisos.com', 'Villa Carolina 1 etapa mz i casa 24', '3136464151 ext 15');
 
 -- --------------------------------------------------------
 
@@ -228,7 +144,7 @@ CREATE TABLE `cursos` (
   `institucion` varchar(200) NOT NULL,
   `descripcion` varchar(240) NOT NULL,
   `horas` int(5) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -240,7 +156,7 @@ CREATE TABLE `departamentos` (
   `id` int(11) NOT NULL,
   `nombre` varchar(128) NOT NULL,
   `codigo` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Volcado de datos para la tabla `departamentos`
@@ -285,48 +201,6 @@ INSERT INTO `departamentos` (`id`, `nombre`, `codigo`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `encuesta`
---
-
-CREATE TABLE `encuesta` (
-  `id` int(11) NOT NULL,
-  `id_autor` int(8) NOT NULL,
-  `create_date` date NOT NULL,
-  `tipo_encuesta` varchar(64) NOT NULL,
-  `nombre` varchar(128) NOT NULL,
-  `descripcion` text NOT NULL,
-  `fecha_final` date NOT NULL,
-  `estado` varchar(64) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `enfermedades`
---
-
-CREATE TABLE `enfermedades` (
-  `id` int(11) NOT NULL,
-  `id_usuario` int(11) NOT NULL,
-  `nombre` varchar(200) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `envio_correos`
---
-
-CREATE TABLE `envio_correos` (
-  `id` int(11) NOT NULL,
-  `tipo` varchar(128) NOT NULL,
-  `destinatarios` text NOT NULL,
-  `fecha_hora` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
-
--- --------------------------------------------------------
-
---
 -- Estructura de tabla para la tabla `estudios`
 --
 
@@ -339,41 +213,7 @@ CREATE TABLE `estudios` (
   `institucion` varchar(200) NOT NULL,
   `ano` int(4) NOT NULL,
   `ciudad` varchar(120) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `historia`
---
-
-CREATE TABLE `historia` (
-  `id` int(11) NOT NULL,
-  `id_autor` int(8) NOT NULL,
-  `fecha_hora` datetime NOT NULL,
-  `texto` text NOT NULL,
-  `imagen` text DEFAULT NULL,
-  `link` text DEFAULT NULL,
-  `documento` text DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `incapacidades`
---
-
-CREATE TABLE `incapacidades` (
-  `id` int(11) NOT NULL,
-  `id_usuario` int(11) NOT NULL,
-  `inicio` date NOT NULL,
-  `fin` date NOT NULL,
-  `tipo` varchar(128) NOT NULL,
-  `duracion` int(4) NOT NULL,
-  `descripcion` text NOT NULL,
-  `diagnostico` text DEFAULT NULL,
-  `estado` int(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -386,7 +226,7 @@ CREATE TABLE `lesiones` (
   `id_usuario` int(11) NOT NULL,
   `tipo` varchar(32) NOT NULL,
   `nombre` varchar(128) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -399,7 +239,7 @@ CREATE TABLE `medicamentos` (
   `id_usuario` int(11) NOT NULL,
   `nombre` varchar(64) NOT NULL,
   `indicaciones` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -414,7 +254,7 @@ CREATE TABLE `modulos` (
   `estado` int(1) NOT NULL,
   `eliminar` int(1) NOT NULL,
   `variable` varchar(32) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `modulos`
@@ -424,14 +264,7 @@ INSERT INTO `modulos` (`id`, `nombre`, `icono`, `estado`, `eliminar`, `variable`
 (1, 'Administrativo', NULL, 1, 0, 'administrativo'),
 (2, 'Modulos', NULL, 1, 0, 'modulos'),
 (3, 'Cargos', NULL, 1, 0, 'cargos'),
-(4, 'Usuarios', NULL, 1, 0, 'usuarios'),
-(5, 'Sedes', NULL, 1, 0, 'sedes'),
-(6, 'Talento Humano', NULL, 1, 0, 'talento humano'),
-(7, 'Notas de Inicio', NULL, 1, 1, 'notas de inicio'),
-(8, 'Agenda', NULL, 1, 1, 'agenda'),
-(9, 'Biblioteca', NULL, 1, 1, 'biblioteca'),
-(10, 'Calificacion Servicio', NULL, 1, 0, 'calificacion servicio'),
-(11, 'Contratos', NULL, 1, 0, 'contratos');
+(4, 'Usuarios', NULL, 1, 0, 'usuarios');
 
 -- --------------------------------------------------------
 
@@ -443,11 +276,11 @@ CREATE TABLE `modulos_cargos` (
   `id` int(11) NOT NULL,
   `id_cargo` int(2) NOT NULL,
   `id_modulo` int(2) NOT NULL,
-  `crear` int(1) NOT NULL DEFAULT 0,
-  `editar` int(1) NOT NULL DEFAULT 0,
-  `eliminar` int(1) NOT NULL DEFAULT 0,
-  `ver` int(1) NOT NULL DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+  `crear` int(1) NOT NULL DEFAULT '0',
+  `editar` int(1) NOT NULL DEFAULT '0',
+  `eliminar` int(1) NOT NULL DEFAULT '0',
+  `ver` int(1) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `modulos_cargos`
@@ -526,7 +359,7 @@ CREATE TABLE `municipios` (
   `departamento_id` int(11) NOT NULL,
   `codigo` int(11) NOT NULL,
   `nombre` varchar(128) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Volcado de datos para la tabla `municipios`
@@ -1664,88 +1497,15 @@ INSERT INTO `municipios` (`id`, `departamento_id`, `codigo`, `nombre`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `nominados`
---
-
-CREATE TABLE `nominados` (
-  `id` int(11) NOT NULL,
-  `id_form` int(8) NOT NULL,
-  `id_nominado` int(8) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `notas`
---
-
-CREATE TABLE `notas` (
-  `id` int(11) NOT NULL,
-  `id_autor` int(11) NOT NULL,
-  `tipo_nota` varchar(80) NOT NULL,
-  `dirigido` varchar(80) NOT NULL,
-  `id_cargo` int(2) NOT NULL,
-  `id_sede` int(2) NOT NULL,
-  `id_usuario` int(11) NOT NULL,
-  `fecha_ini` date NOT NULL,
-  `fecha_fin` date NOT NULL,
-  `descripcion_nota` text NOT NULL,
-  `imagen` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `sedes`
---
-
-CREATE TABLE `sedes` (
-  `id` int(11) NOT NULL,
-  `nombre` varchar(128) NOT NULL,
-  `direccion` varchar(128) DEFAULT NULL,
-  `telefono` varchar(128) DEFAULT NULL,
-  `email` varchar(128) DEFAULT NULL,
-  `id_municipio` int(11) NOT NULL,
-  `estado` int(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-
---
--- Volcado de datos para la tabla `sedes`
---
-
-INSERT INTO `sedes` (`id`, `nombre`, `direccion`, `telefono`, `email`, `id_municipio`, `estado`) VALUES
-(1, 'Armenia (Principal)', 'CARRERA 18 # 12-25', '67107857', 'gerencia@quindipisos.com', 825, 1);
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `soporte`
---
-
-CREATE TABLE `soporte` (
-  `id` int(11) NOT NULL,
-  `id_autor` int(8) NOT NULL,
-  `id_modulo` int(2) NOT NULL,
-  `estado` varchar(64) NOT NULL DEFAULT 'Nuevo',
-  `tipo` varchar(64) NOT NULL,
-  `imagen` text NOT NULL,
-  `descripcion` text NOT NULL,
-  `observaciones` text DEFAULT NULL,
-  `fecha` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
-
--- --------------------------------------------------------
-
---
 -- Estructura de tabla para la tabla `tipo_usuarios`
 --
 
 CREATE TABLE `tipo_usuarios` (
   `id` int(11) NOT NULL,
   `nombre_tipo` varchar(64) NOT NULL,
-  `descripcion` text DEFAULT NULL,
+  `descripcion` text,
   `estado` int(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `tipo_usuarios`
@@ -1781,13 +1541,13 @@ CREATE TABLE `usuarios` (
   `email` varchar(128) NOT NULL,
   `fecha_creacion` datetime NOT NULL,
   `ciudad_residencia` int(11) DEFAULT NULL,
-  `facebook` text DEFAULT NULL,
-  `instagram` text DEFAULT NULL,
-  `youtube` text DEFAULT NULL,
-  `tiktok` text DEFAULT NULL,
-  `inf_usuario` text DEFAULT NULL,
+  `facebook` text,
+  `instagram` text,
+  `youtube` text,
+  `tiktok` text,
+  `inf_usuario` text,
   `firma_digital` text NOT NULL,
-  `menu` int(1) NOT NULL DEFAULT 0,
+  `menu` int(1) NOT NULL DEFAULT '0',
   `contacto_emergencia` varchar(128) DEFAULT NULL,
   `parentezco_contacto` varchar(64) DEFAULT NULL,
   `telefono_contacto` varchar(16) DEFAULT NULL,
@@ -1819,8 +1579,8 @@ CREATE TABLE `usuarios` (
   `tipo_vivienda` varchar(32) DEFAULT NULL,
   `licencia_conduccion` int(1) DEFAULT NULL,
   `licencia_descr` varchar(64) DEFAULT NULL,
-  `act_tiempo_libre` text DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+  `act_tiempo_libre` text
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `usuarios`
@@ -1828,84 +1588,6 @@ CREATE TABLE `usuarios` (
 
 INSERT INTO `usuarios` (`id`, `estado`, `id_cargo`, `id_sede`, `id_tipo_usuario`, `nombre_completo`, `doc_id`, `direccion`, `telefono`, `fecha_nacimiento`, `genero`, `avatar`, `usuario_login`, `pass_login`, `email`, `fecha_creacion`, `ciudad_residencia`, `facebook`, `instagram`, `youtube`, `tiktok`, `inf_usuario`, `firma_digital`, `menu`, `contacto_emergencia`, `parentezco_contacto`, `telefono_contacto`, `eps`, `tipo_sangre`, `nivel_academico`, `profesion`, `experiencia`, `fondo`, `cesantias`, `nombre_madre`, `telefono_madre`, `nombre_padre`, `telefono_padre`, `estrato`, `estado_civil`, `grupo_etnico`, `personas_cargo`, `cabeza_familia`, `hijos`, `fuma`, `fuma_frecuencia`, `bebidas`, `bebidas_frecuencia`, `deporte`, `talla_camisa`, `talla_pantalon`, `talla_calzado`, `tipo_vivienda`, `licencia_conduccion`, `licencia_descr`, `act_tiempo_libre`) VALUES
 (1, 1, 1, 1, 1, 'Super Administrador', '', '', '', '1984-12-06', 'Masculino', 'superman.gif', 'Administrador', 'ca504360e97fb6fd9024e080f4f3fbba', 'jpfb1206@gmail.com', '2023-09-05 00:00:00', 825, NULL, NULL, NULL, NULL, NULL, '', 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `usuario_compensacion`
---
-
-CREATE TABLE `usuario_compensacion` (
-  `id` int(11) NOT NULL,
-  `id_usuario` int(11) NOT NULL,
-  `id_autor` int(11) NOT NULL,
-  `fecha_creacion` date NOT NULL,
-  `dias` int(2) NOT NULL,
-  `estado` int(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `usuario_dias_compensar`
---
-
-CREATE TABLE `usuario_dias_compensar` (
-  `id` int(11) NOT NULL,
-  `id_usuario` int(11) NOT NULL,
-  `id_autor` int(11) NOT NULL,
-  `fecha` date NOT NULL,
-  `cant_dias` int(2) NOT NULL,
-  `estado` int(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `usuario_personas_cargo`
---
-
-CREATE TABLE `usuario_personas_cargo` (
-  `id` int(11) NOT NULL,
-  `id_usuario` int(11) NOT NULL,
-  `nombre` varchar(128) NOT NULL,
-  `fecha_nac` date NOT NULL,
-  `parentezco` varchar(32) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `usuario_solicitudes`
---
-
-CREATE TABLE `usuario_solicitudes` (
-  `id` int(11) NOT NULL,
-  `id_usuario` int(11) NOT NULL,
-  `tipo` varchar(32) NOT NULL,
-  `fecha_solicitud` date NOT NULL,
-  `estado` int(1) NOT NULL,
-  `fecha_inicial` date NOT NULL,
-  `fecha_final` date DEFAULT NULL,
-  `cantidad` int(2) NOT NULL,
-  `compensados` int(2) DEFAULT 0,
-  `observaciones` text NOT NULL,
-  `id_aprobador` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `voto_nominacion`
---
-
-CREATE TABLE `voto_nominacion` (
-  `id` int(11) NOT NULL,
-  `id_autor_respuesta` int(8) NOT NULL,
-  `id_nominado` int(8) NOT NULL,
-  `fecha` date NOT NULL,
-  `id_encuesta` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 --
 -- Índices para tablas volcadas
@@ -1936,26 +1618,6 @@ ALTER TABLE `cirugias`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `colaboradores_mes`
---
-ALTER TABLE `colaboradores_mes`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indices de la tabla `comentario_historia`
---
-ALTER TABLE `comentario_historia`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `fk_id_autor_historia` (`id_autor`),
-  ADD KEY `fk_id_historia` (`id_historia`);
-
---
--- Indices de la tabla `compensacion_detalle`
---
-ALTER TABLE `compensacion_detalle`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indices de la tabla `conexiones`
 --
 ALTER TABLE `conexiones`
@@ -1966,12 +1628,6 @@ ALTER TABLE `conexiones`
 -- Indices de la tabla `configuracion`
 --
 ALTER TABLE `configuracion`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indices de la tabla `contratos`
---
-ALTER TABLE `contratos`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -1987,39 +1643,9 @@ ALTER TABLE `departamentos`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `encuesta`
---
-ALTER TABLE `encuesta`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indices de la tabla `enfermedades`
---
-ALTER TABLE `enfermedades`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indices de la tabla `envio_correos`
---
-ALTER TABLE `envio_correos`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indices de la tabla `estudios`
 --
 ALTER TABLE `estudios`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indices de la tabla `historia`
---
-ALTER TABLE `historia`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indices de la tabla `incapacidades`
---
-ALTER TABLE `incapacidades`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -2056,35 +1682,6 @@ ALTER TABLE `municipios`
   ADD KEY `fk_departamento_municipio` (`departamento_id`);
 
 --
--- Indices de la tabla `nominados`
---
-ALTER TABLE `nominados`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `fk_encuesta` (`id_form`);
-
---
--- Indices de la tabla `notas`
---
-ALTER TABLE `notas`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `nota_autor_fk` (`id_autor`),
-  ADD KEY `nota_usuario_fk` (`id_usuario`);
-
---
--- Indices de la tabla `sedes`
---
-ALTER TABLE `sedes`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indices de la tabla `soporte`
---
-ALTER TABLE `soporte`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `fk_modulo_soporte` (`id_modulo`),
-  ADD KEY `fk_soporte_usuario` (`id_autor`);
-
---
 -- Indices de la tabla `tipo_usuarios`
 --
 ALTER TABLE `tipo_usuarios`
@@ -2100,37 +1697,6 @@ ALTER TABLE `usuarios`
   ADD KEY `fk_municipio_usuario` (`ciudad_residencia`);
 
 --
--- Indices de la tabla `usuario_compensacion`
---
-ALTER TABLE `usuario_compensacion`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indices de la tabla `usuario_dias_compensar`
---
-ALTER TABLE `usuario_dias_compensar`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indices de la tabla `usuario_personas_cargo`
---
-ALTER TABLE `usuario_personas_cargo`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indices de la tabla `usuario_solicitudes`
---
-ALTER TABLE `usuario_solicitudes`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indices de la tabla `voto_nominacion`
---
-ALTER TABLE `voto_nominacion`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `fk_nominado` (`id_nominado`);
-
---
 -- AUTO_INCREMENT de las tablas volcadas
 --
 
@@ -2139,205 +1705,81 @@ ALTER TABLE `voto_nominacion`
 --
 ALTER TABLE `alergias`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
 --
 -- AUTO_INCREMENT de la tabla `antecedentes`
 --
 ALTER TABLE `antecedentes`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
 --
 -- AUTO_INCREMENT de la tabla `cargos`
 --
 ALTER TABLE `cargos`
-  MODIFY `id` int(2) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
-
+  MODIFY `id` int(2) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT de la tabla `cirugias`
 --
 ALTER TABLE `cirugias`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `colaboradores_mes`
---
-ALTER TABLE `colaboradores_mes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `comentario_historia`
---
-ALTER TABLE `comentario_historia`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `compensacion_detalle`
---
-ALTER TABLE `compensacion_detalle`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
 --
 -- AUTO_INCREMENT de la tabla `conexiones`
 --
 ALTER TABLE `conexiones`
   MODIFY `id` int(8) NOT NULL AUTO_INCREMENT;
-
 --
 -- AUTO_INCREMENT de la tabla `configuracion`
 --
 ALTER TABLE `configuracion`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT de la tabla `contratos`
---
-ALTER TABLE `contratos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
 --
 -- AUTO_INCREMENT de la tabla `cursos`
 --
 ALTER TABLE `cursos`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
 --
 -- AUTO_INCREMENT de la tabla `departamentos`
 --
 ALTER TABLE `departamentos`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
-
---
--- AUTO_INCREMENT de la tabla `encuesta`
---
-ALTER TABLE `encuesta`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `enfermedades`
---
-ALTER TABLE `enfermedades`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `envio_correos`
---
-ALTER TABLE `envio_correos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
 --
 -- AUTO_INCREMENT de la tabla `estudios`
 --
 ALTER TABLE `estudios`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `historia`
---
-ALTER TABLE `historia`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `incapacidades`
---
-ALTER TABLE `incapacidades`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
 --
 -- AUTO_INCREMENT de la tabla `lesiones`
 --
 ALTER TABLE `lesiones`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
 --
 -- AUTO_INCREMENT de la tabla `medicamentos`
 --
 ALTER TABLE `medicamentos`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
 --
 -- AUTO_INCREMENT de la tabla `modulos`
 --
 ALTER TABLE `modulos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
-
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT de la tabla `modulos_cargos`
 --
 ALTER TABLE `modulos_cargos`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
-
 --
 -- AUTO_INCREMENT de la tabla `municipios`
 --
 ALTER TABLE `municipios`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1128;
-
---
--- AUTO_INCREMENT de la tabla `nominados`
---
-ALTER TABLE `nominados`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `notas`
---
-ALTER TABLE `notas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `sedes`
---
-ALTER TABLE `sedes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT de la tabla `soporte`
---
-ALTER TABLE `soporte`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
 --
 -- AUTO_INCREMENT de la tabla `tipo_usuarios`
 --
 ALTER TABLE `tipo_usuarios`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
   MODIFY `id` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT de la tabla `usuario_compensacion`
---
-ALTER TABLE `usuario_compensacion`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `usuario_dias_compensar`
---
-ALTER TABLE `usuario_dias_compensar`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `usuario_personas_cargo`
---
-ALTER TABLE `usuario_personas_cargo`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `usuario_solicitudes`
---
-ALTER TABLE `usuario_solicitudes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `voto_nominacion`
---
-ALTER TABLE `voto_nominacion`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
 --
 -- Restricciones para tablas volcadas
 --
@@ -2362,31 +1804,12 @@ ALTER TABLE `municipios`
   ADD CONSTRAINT `fk_departamento_municipio` FOREIGN KEY (`departamento_id`) REFERENCES `departamentos` (`id`);
 
 --
--- Filtros para la tabla `nominados`
---
-ALTER TABLE `nominados`
-  ADD CONSTRAINT `fk_encuesta` FOREIGN KEY (`id_form`) REFERENCES `encuesta` (`id`);
-
---
--- Filtros para la tabla `soporte`
---
-ALTER TABLE `soporte`
-  ADD CONSTRAINT `fk_modulo_soporte` FOREIGN KEY (`id_modulo`) REFERENCES `modulos` (`id`),
-  ADD CONSTRAINT `fk_soporte_usuario` FOREIGN KEY (`id_autor`) REFERENCES `usuarios` (`id`);
-
---
 -- Filtros para la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
   ADD CONSTRAINT `fk_cargo_usuario` FOREIGN KEY (`id_cargo`) REFERENCES `cargos` (`id`),
   ADD CONSTRAINT `fk_municipio_usuario` FOREIGN KEY (`ciudad_residencia`) REFERENCES `municipios` (`id`),
   ADD CONSTRAINT `fk_tipo_usuario` FOREIGN KEY (`id_tipo_usuario`) REFERENCES `tipo_usuarios` (`id`);
-
---
--- Filtros para la tabla `voto_nominacion`
---
-ALTER TABLE `voto_nominacion`
-  ADD CONSTRAINT `fk_nominado` FOREIGN KEY (`id_nominado`) REFERENCES `nominados` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

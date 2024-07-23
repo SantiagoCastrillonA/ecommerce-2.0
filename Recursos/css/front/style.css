@@ -432,7 +432,7 @@ a.readmore_bt {
 
 .header {
      font-family: poppins;
-     padding: 10px 0px;
+     padding: 10px -1px !important;
      background-image: url(../../../Recursos/img/hea.png);
      background-repeat: no-repeat;
      background-size: 100% 100%;

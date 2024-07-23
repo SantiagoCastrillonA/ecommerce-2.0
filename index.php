@@ -2,6 +2,7 @@
 <html lang="es">
 
 <head>
+<title>Inicio</title>
     <?php
     include 'Vista/front/head.php';
     ?>

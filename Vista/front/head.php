@@ -1,12 +1,19 @@
 <head>
     <!-- basic -->
+    <?php
+    include_once 'Conexion/Conexion.php';
+    $sqlConf = 'SELECT C.nombre, C.logo, C.email_carta, C.tel_contacto, C.direccion FROM configuracion C;';
+    $res = mysqli_fetch_row(ejecutarSQL::consultar($sqlConf));
+    
+    ?>
+
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <!-- mobile metas -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1">
     <!-- site metas -->
-    <title>Inicio</title>
+    
     <meta name="keywords" content="">
     <meta name="description" content="">
     <meta name="author" content="">

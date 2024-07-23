@@ -27,10 +27,11 @@ class ejecutarSQL {
     public static function conectar() {
         $host = "localhost";
         $user = "root";
-        $bd = "quindisistem";
+        $bd = "ecommerce";
+        $port = "3307";
         $pass = "";
 
-        if (!$con = mysqli_connect($host, $user, $pass, $bd)) {
+        if (!$con = mysqli_connect($host, $user, $pass, $bd, $port)) {
             die(mysqli_error(ejecutarSQL::conectar()) . "Error en el servidor, verifique sus datos");
         }
         mysqli_set_charset($con, 'utf8');        

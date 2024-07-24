@@ -41,57 +41,6 @@
                 </nav>
                 <!-- /.navbar -->
 
-                <div class="modal fade" id="crearHistoria" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="card card-success">
-                                <div class="modal-header notiHeader">
-                                    <h3 class="card-title">Crear historia</h3>
-                                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true" style="color: white;">&times;</span>
-                                    </button>
-                                </div>
-                                <form id="form_crear_historia" enctype="multipart/form-data">
-                                    <div class="card-body">
-                                        <div class="div form-group">
-                                            <textarea name="texto" class="form-control" rows="3" required placeholder="Que estás pensando o qué quieres compartir?"></textarea>
-                                        </div>
-                                        <div class="input-group mb-3">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text"><i class='fas fa-image' accept="image/*"></i></span>
-                                            </div>
-                                            <input type="file" name="imagen" class="form-control" accept="image/*">
-                                        </div>
-                                        <div class="div form-group">
-                                            <input type="text" class="form-control" name="link" placeholder="Espacio para una URL">
-                                        </div>
-                                        <div class="input-group mb-3">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text"><i class='fas fa-file-pdf' accept="pdf/*"></i></span>
-                                            </div>
-                                            <input type="file" name="documento" class="form-control" accept="pdf/*" placeholder="Documento PDF">
-                                        </div>
-                                        <div class="div form-group">
-                                            <input type="hidden" name="funcion" value="crearHistoria">
-                                            <input type="hidden" name="id_autor" value="<?php echo $_SESSION['id_user']; ?>">
-                                        </div>
-                                        <div class="alert alert-success text-center" id="divCreate" style="display: none;">
-                                            <span><i class='fas fa-check m-1'> Historia registrada</i></span>
-                                        </div>
-                                        <div class="alert alert-danger text-center" id="divNoCreate" style="display: none;">
-                                            <span><i class='fas fa-times m-1' id="spanNoCreate"></i></span>
-                                        </div>
-                                    </div>
-                                    <div class="card-footer">
-                                        <button type="submit" class="btn bg-gradient-primary float-right m-1">Guardar</button>
-                                        <button type="button" class="btn btn-outline-secondary float-right m-1" data-bs-dismiss="modal">Cerrar</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <!-- Main Sidebar Container -->
                 <aside class="main-sidebar sidebar-dark-primary elevation-4">
                     <!-- Brand Logo -->
@@ -165,7 +114,7 @@
                                     (isset($_SESSION['modulos']['id']) && $_SESSION['modulos']['id'] == 2)
                                 ) {
                                 ?>
-                                    <li class="nav-item has-treeview <?php echo $modulo == 'cargos' || $modulo == 'configuracion' || $modulo == 'modulos' || $modulo == 'reporte_notificaciones' || $modulo == 'eventos' || $modulo ==  'areas' || $modulo == 'version_check' ? 'menu-open' : 'menu-close' ?>">
+                                    <li class="nav-item has-treeview <?php echo $modulo == 'cargos' || $modulo == 'configuracion' || $modulo == 'modulos'  ? 'menu-open' : 'menu-close' ?>">
                                         <a href="#" class="nav-link">
                                             <i class="nav-icon fas fa-cogs"></i>
                                             <p>
@@ -257,6 +206,50 @@
                                                     <a href="../Vista/adm_usuarios.php?modulo=usuarios" class="nav-link <?= $modulo == 'usuarios' ? 'active' : '' ?>">
                                                         <i class="fas fa-hands-helping nav-icon"></i>
                                                         <p>Gestión <?= isset($_SESSION['usuarios']['nombre']) ? $_SESSION['usuarios']['nombre'] : "Usuarios" ?></p>
+                                                    </a>
+                                                </li>
+                                            <?php
+                                            }
+                                            ?>
+                                        </ul>
+                                    </li>
+                                <?php
+                                }
+                                //productos
+                                if (
+                                    $_SESSION['datos'][0]->id_tipo_usuario <= 2 ||
+                                    (isset($_SESSION['productos']['id']) && $_SESSION['productos']['id'] == 4)
+                                ) {
+                                ?>
+                                    <li class="nav-item has-treeview <?php echo $modulo == 'productos' || $modulo == 'categorias' ? 'menu-open' : 'menu-close' ?>">
+                                        <a href="#" class="nav-link">
+                                            <?php
+                                            if (isset($_SESSION['productos']['icono']) && $_SESSION['productos']['icono'] <> null) {
+                                                echo "<i class='nav-icon'><img src='../../Recursos/img/empresa/" . $_SESSION['productos']['icono'] . "' width='22px'></i> ";
+                                            } else {
+                                                echo '<i class="nav-icon fas fa-users"></i>';
+                                            }
+                                            ?>
+                                            <p>
+                                                <?= isset($_SESSION['productos']['nombre']) ? $_SESSION['productos']['nombre'] : "Productos" ?> Sistema
+                                                <i class="right fas fa-angle-left"></i>
+                                            </p>
+                                        </a>
+                                        <ul class="nav nav-treeview">
+                                            <?php
+                                            if ((isset($_SESSION['productos']['id']) && $_SESSION['productos']['ver'] == 1) || $_SESSION['datos'][0]->id_tipo_usuario <= 2) {
+                                            ?>
+                                                <li class="nav-item">
+                                                    <a href="../Vista/adm_productos.php?modulo=productos" class="nav-link <?= $modulo == 'productos' ? 'active' : '' ?>">
+                                                        <i class="nav-icon"><img src="../Recursos/img/iconos logistica-18.png" style="width: 25px" alt=""></i>
+                                                        <p>Gestión <?= isset($_SESSION['productos']['nombre']) ? $_SESSION['productos']['nombre'] : "Productos" ?></p>
+                                                    </a>
+                                                </li>
+
+                                                <li class="nav-item">
+                                                    <a href="../Vista/adm_categorias.php?modulo=categorias" class="nav-link <?= $modulo == 'categorias' ? 'active' : '' ?>">
+                                                        <i class="nav-icon"><img src="../Recursos/img/iconos logistica-12.png" style="width: 25px" alt=""></i>
+                                                        <p>Categorias</p>
                                                     </a>
                                                 </li>
                                             <?php

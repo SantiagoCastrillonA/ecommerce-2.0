@@ -1,128 +1,53 @@
 <!DOCTYPE html>
 <html lang="es">
-	<head>
-		<title>Tienda</title>
-		<?php
-    include 'Vista/front/head.php';
-    ?>
-		<style type="text/css" id="operaUserStyle"></style>
-	</head>
-	<body>
+
+<head>
+	<title>Tienda</title>
 	<?php
-        include 'Vista/front/header.php';
-        ?>
-		<header>
-			<h1>Tienda</h1>
+	include 'Vista/front/head.php';
+	?>
+	<style type="text/css" id="operaUserStyle"></style>
+</head>
 
-			
-		</header>
-		<div class="container-items">
+<body>
+	<?php
+	include 'Vista/front/header.php';
+	?>
+	<header>
+		<h1>Tienda</h1>
+	</header>
+	<div class="container-items">
+		<?php
+		$sqlConf = 'SELECT * FROM productos p where p.estado = 1';
+		$resProductos = ejecutarSQL::consultar($sqlConf);
+		while ($row = mysqli_fetch_array($resProductos)) {
+		?>
 			<div class="item">
 				<figure>
-					<img
-						src="images\1.PNG"
-						alt="producto"
-					/>
+					<img src="Recursos/img/productos/<?php echo $row['foto']; ?>" alt="producto" />
 				</figure>
 				<div class="info-product">
-					<h2>Cover coraline</h2>
-					<p class="price">$30.000</p>
+					<h2><?php echo $row['nombre_producto']; ?></h2>
+					<p class="price">$<?php echo $row['precio']; ?></p>
 					<button>Añadir al carrito</button>
 				</div>
 			</div>
-			<div class="item">
-				<figure>
-					<img
-						src="images\2.PNG"
-						alt="producto"
-					/>
-				</figure>
-				<div class="info-product">
-					<h2>Cover peluche</h2>
-					<p class="price">$20.000</p>
-					<button>Añadir al carrito</button>
-				</div>
-			</div>
-			<div class="item">
-				<figure>
-					<img
-						src="images\3.PNG"
-						alt="producto"
-					/>
-				</figure>
-				<div class="info-product">
-					<h2>Cover tornasol</h2>
-					<p class="price">$50.000</p>
-					<button>Añadir al carrito</button>
-				</div>
-			</div>
-			<div class="item">
-				<figure>
-					<img
-						src="images\4.PNG"
-						alt="producto"
-					/>
-				</figure>
-				<div class="info-product">
-					<h2>Cover corazón</h2>
-					<p class="price">$20.000</p>
-					<button>Añadir al carrito</button>
-				</div>
-			</div>
-			<div class="item">
-				<figure>
-					<img
-						src="images\5.PNG"
-						alt="producto"
-					/>
-				</figure>
-				<div class="info-product">
-					<h2>Cover Karolg</h2>
-					<p class="price">$50.000</p>
-					<button>Añadir al carrito</button>
-				</div>
-			</div>
+		<?php
+		};
+		?>
+	</div>
 
-            <div class="item">
-				<figure>
-					<img
-						src="images\6.PNG"
-						alt="producto"
-					/>
-				</figure>
-				<div class="info-product">
-					<h2>Cover Karolg</h2>
-					<p class="price">$50.000</p>
-					<button>Añadir al carrito</button>
-				</div>
-			</div>
+	<script src="index.js"></script>
+	<!-- footer -->
+	<footer>
+		<?php
+		include 'Vista/front/footer.php';
+		?>
+	</footer>
+	<?php
+	include 'Vista/front/scripts.php';
+	?>
 
-            <div class="item">
-				<figure>
-					<img
-						src="images\7.PNG"
-						alt="producto"
-					/>
-				</figure>
-				<div class="info-product">
-					<h2>Cover 2Pac</h2>
-					<p class="price">$50.000</p>
-					<button>Añadir al carrito</button>
-				</div>
-			</div>
+</body>
 
-		</div>
-
-        <script src="index.js"></script>
-		    <!-- footer -->
-			<footer>
-    <?php
-    include 'Vista/front/footer.php';
-    ?>
-    </footer>
-    <?php
-    include 'Vista/front/scripts.php';
-    ?>
-
-	</body>
 </html>

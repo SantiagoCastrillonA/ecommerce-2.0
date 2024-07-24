@@ -298,5 +298,4 @@
     include 'Vista/front/scripts.php';
     ?>
 </body>
-
 </html>

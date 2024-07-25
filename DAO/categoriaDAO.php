@@ -1,7 +1,7 @@
 <?php
 include_once '../Conexion/Conexion.php';
 include_once '../Modelo/CategoriaProducto.php';
-class CategoriaDAO
+class CategoriadDAO
 {
     var $objetos;
     private $acceso = "";

@@ -1621,7 +1621,7 @@ font-weight: 500;
 .banner-main .carousel-caption .buynow  {
 text-transform: uppercase;
 border: #fff solid 1px;
-background: #9B59B6;
+background: #c36497;
 width: 196px;
 padding: 12px 0;
 display: inline-block;
@@ -1781,7 +1781,7 @@ color: #fff;
 }
 
 .clients_red {
-     background: #888687;
+     background: #fbd1e8;
      padding-top: 90px;
      padding-bottom:110px;
 } 
@@ -1873,12 +1873,12 @@ border-radius: 50px;
      padding: 17px 0px 0px 0px;
 }
 .red {
-     color: #EBDEF0;
+     color: #000;
 }
 
 .brand-bg .brand_box span {
      display: block;
-     color: #de4dde;
+     color: #000000;
      font-size: 16px;
 line-height: 16px;
 padding-bottom: 3px;
@@ -1975,7 +1975,7 @@ margin-top: 40px
      padding-top: 60px;
 }
 .footer {
-     background-color:#4A235A;
+     background-color:#fe68bc;
      text-align: center;
      font-family: poppins;
 }

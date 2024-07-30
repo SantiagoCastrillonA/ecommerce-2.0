@@ -26,64 +26,34 @@ $(document).ready(function () {
     function buscar(consulta) {
         let template = ``;
         if (ver == 1 || tipoUsuario <= 2) {
-            var funcion = "buscar_cargo";
-            $.post('../Controlador/cargoController.php', { consulta, funcion }, (response) => {
+            var funcion = "buscar";
+            $.post('../Controlador/categoriaController.php', { consulta, funcion }, (response) => {
                 const objetos = JSON.parse(response);
                 num = 0;
                 template += `            <table class="table table-bordered table-responsive text-center">
-                                                <thead>                  
-                                                    <tr class='notiHeader'>
-                                                        <th >#</th>
-                                                        <th>Acción</th>
-                                                        <th>Nombre</th>                                                    
-                                                        <th>Historias</th>
-                                                        <th>Soporte</th>
-                                                        <th>Jefe Directo</th>
-                                                        <th>Estado</th>
-                                                        <th>Módulos</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>`;
+                                            <thead>                  
+                                                <tr class='notiHeader'>
+                                                    <th >#</th>
+                                                    <th>Acción</th>
+                                                    <th>Nombre</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>`;
 
                 objetos.forEach(objeto => {
                     num += 1;
-                    template += `                   <tr idCargo=${objeto.id}>
-                                                        <td>${num}</td>
-                                                        <td>`;
+                    template += `                <tr id=${objeto.id}>
+                                                    <td>${num}</td>
+                                                    <td>`;
                     if (editar == 1) {
-                        template += `                       <button class='editCargo btn btn-sm btn-primary mr-1' type='button' data-bs-toggle="modal" data-bs-target="#editar_cargo">
+                        template += `                    <button class='edit btn btn-sm btn-primary mr-1' type='button' data-bs-toggle="modal" data-bs-target="#editar_categoria">
                                                                 <i class="fas fa-pencil-alt"></i>
-                                                            </button>`;
+                                                        </button>`;
                     }
-                    template += `                       </td>
-                                                        <td>${objeto.nombre_cargo}</td>
-                                                        <td>${objeto.historias == 0 ? "Inactivo" : 'Activo'}</td>
-                                                        <td>${objeto.soporte == 0 ? "Inactivo" : 'Activo'}</td>
-                                                        <td>${objeto.jefe}</td>
-                                                        <td>
-                                                            <div class="custom-control custom-switch">`;
-                    if (objeto.id != 2) {
-                        if (objeto.estado == 1) {
-                            template += `                           <input type="checkbox" class="stateCargo custom-control-input" id="customSwitch${objeto.id}" checked>`;
-                        } else {
-                            template += `                           <input type="checkbox" class="stateCargo custom-control-input" id="customSwitch${objeto.id}">`;
-                        }
-                        template += `                               <label class="custom-control-label" for="customSwitch${objeto.id}"></label>   
-                                                            </div>`;
-                    } else {
-                        template += `No Aplica`;
-                    }
-                    template += `                       </td>
-                                                        <td>`;
-                    if (objeto.estado == 1 && objeto.id != 2) {
-                        template += `                           <a href='../Vista/modulosCargo.php?id=${objeto.id}&modulo=cargos'>
-                                                                    <button class='btn btn-sm btn-info mr-1' type='button'>
-                                                                        <i class="fab fa-buromobelexperte"></i>
-                                                                    </button>
-                                                                </a>`;
-                    }
-                    template += `                       </td>`;
-                    template += `                   </tr>`;
+                    template += `                   </td>
+                                                    <td>${objeto.nombre}</td>`;
+                                                                    
+                    template += `               </tr>`;
 
                 });
                 template += `                   </tbody>
@@ -103,95 +73,56 @@ $(document).ready(function () {
      * 
      * @param {object} e - The click event object.
      */
-    $(document).on('click', '.editCargo', (e) => {
+    $(document).on('click', '.edit', (e) => {
         const elemento = $(this)[0].activeElement.parentElement.parentElement;
-        const id = $(elemento).attr('idCargo');
-        $('#txtId_CargoEd').val(id);
-        funcion = 'cargarCargo';
-        $.post('../Controlador/cargoController.php', { id, funcion }, (response) => {
+        const id = $(elemento).attr('id');
+        $('#txtIdCategoria').val(id); // Guarda el id de la categoria en un campo oculto
+        funcion = 'cargar';
+        $.post('../Controlador/categoriaController.php', { id, funcion }, (response) => {
             const obj = JSON.parse(response);
-            $('#txtNombreCargo2').val(obj.nombre_cargo);
-            $('#txtDescCargo2').val(obj.descripcion);
-            $('#selIdJefe2').val(obj.id_jefe).trigger('change.select2');
-            $('#checkHistorias2').attr('checked', false);
-            $('#checkSoporte2').attr('checked', false);
-            if (obj.historias == 1) {
-                $('#checkHistorias2').attr('checked', true);
-            }
-            if (obj.soporte == 1) {
-                $('#checkSoporte2').attr('checked', true);
-            }
+            $('#txtNombre2').val(obj.nombre);
         });
     });
 
-    $('#form_editar_cargo').submit(e => {
-        let id = $('#txtId_CargoEd').val();
-        let nombre_cargo = $('#txtNombreCargo2').val();
-        let descripcion = $('#txtDescCargo2').val();
-        let id_jefe = $('#selIdJefe2').val();
-        let historias = '';
-        let soporte = '';
-        if (document.getElementById('checkHistorias2').checked) {
-            historias = 1;
-        }
-        if (document.getElementById('checkSoporte2').checked) {
-            soporte = 1;
-        }
-        funcion = 'editar_cargo';
-        $.post('../Controlador/cargoController.php', { funcion, id, id_jefe, nombre_cargo, descripcion, historias, soporte }, (response) => {
-            if (response == 'update') {
-                Toast.fire({
-                    icon: 'success',
-                    title: 'Cargo Actualizado'
-                })
-                $("#editar_cargo").modal('hide'); //ocultamos el modal
+    $('#form_editar_categoria').submit(e => {
+        let id = $('#txtIdCategoria').val();
+        let nombre = $('#txtNombre2').val();
+        funcion = 'editar';
+        $.post('../Controlador/categoriaController.php', {funcion, id, nombre }, (response) => {
+            const respuesta = JSON.parse(response);
+            Toast.fire({
+                icon: respuesta[0].type,
+                title: respuesta[0].mensaje
+            })
+            if (!respuesta[0].error) {
+                buscar();
+                $('#editar_categoria').modal('hide'); //ocultamos el modal
                 $('body').removeClass('modal-open'); //eliminamos la clase del body para poder hacer scroll
                 $('.modal-backdrop').remove(); //eliminamos el backdrop del modal
-                $('#checkHistorias2').attr('checked', false);
-                $('#checkSoporte2').attr('checked', false);
-                buscar();
-            } else {
-                Toast.fire({
-                    icon: 'error',
-                    title: response
-                })
             }
         });
         e.preventDefault();
     });
 
 
-    $('#form_crear_cargo').submit(e => {
-        let nombre_cargo = $('#txtNombreCargo').val();
-        let descripcion = $('#txtDescCargo').val();
-        let id_jefe = $('#selIdJefe').val();
-        let historias = '';
-        let soporte = '';
-        if (document.getElementById('checkHistorias').checked) {
-            historias = 1;
-        }
-        if (document.getElementById('checkSoporte').checked) {
-            soporte = 1;
-        }
-        funcion = 'crear_cargo';
-        $.post('../Controlador/cargoController.php', { funcion, id_jefe, nombre_cargo, descripcion, historias, soporte }, (response) => {
-            if (response == 'create') {
-                Toast.fire({
-                    icon: 'success',
-                    title: 'Cargo registrado'
-                })
-                $("#crearCargo").modal('hide'); //ocultamos el modal
+    $('#form-categoria').submit(e => {
+        let nombre = $('#txtNombre').val();
+        funcion = 'crear';
+        $.post('../Controlador/categoriaController.php', { funcion, nombre}, (response) => {
+            const respuesta = JSON.parse(response);
+            console.log(respuesta);
+            Toast.fire({
+                icon: respuesta[0].type,
+                title: respuesta[0].mensaje
+            })
+            if (!respuesta[0].error) {
+                buscar();
+                $('#form-categoria').trigger('reset');
+                $('#crearCategoria').modal('hide'); //ocultamos el modal
                 $('body').removeClass('modal-open'); //eliminamos la clase del body para poder hacer scroll
                 $('.modal-backdrop').remove(); //eliminamos el backdrop del modal
-                $('#checkHistorias2').attr('checked', false);
-                $('#checkSoporte2').attr('checked', false);
-                buscar();
-            } else {
-                Toast.fire({
-                    icon: 'error',
-                    title: response
-                })
             }
+            
         });
         e.preventDefault();
     });

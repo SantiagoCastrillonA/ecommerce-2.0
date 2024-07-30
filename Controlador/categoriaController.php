@@ -2,25 +2,20 @@
 include_once '../Modelo/CategoriaProducto.php';
 include_once '../DAO/categoriaDAO.php';
 $categoria = new CategoriaProducto();
-$dao = new categoriaDAO();
+$dao = new CategoriadDAO();
 
 /* Este bloque de código verifica si el valor de la variable `['funcion']` es igual a `'buscar'`.
 Si es así, realiza las siguientes acciones: 
 Recorre el resultado de la consulta a la base de datos y los agrega a una lista en formato JSON
 la cual se retorna
 */
-if ($_POST['funcion'] == 'buscar_cargo') {
+if ($_POST['funcion'] == 'buscar') {
     $json = array();
     $dao->buscar_datos();
     foreach ($dao->objetos as $objeto) {
         $json[] = array(
             'id' => $objeto->id,
-            'nombre_cargo' => $objeto->nombre_cargo,
-            'estado' => $objeto->estado,
-            'historias' => $objeto->historias,
-            'soporte' => $objeto->soporte,
-            'jefe' => $objeto->jefe,
-            'id_jefe' => $objeto->id_jefe
+            'nombre' => $objeto->nombre,
         );
     }
     $jsonstring = json_encode($json);
@@ -32,21 +27,13 @@ Si es así, realiza las siguientes acciones:
 Recorre el resultado de la consulta a la base de datos y los agrega a una lista en formato JSON
 la cual se retorna
 */
-if ($_POST['funcion'] == 'cargarCargo') {
+if ($_POST['funcion'] == 'cargar') {
     $json = array();
-    $cargo->setId($_POST['id']) ;
-    $dao->cargarCargo($cargo);
-    foreach ($dao->objetos as $objeto) {
-        $json[] = array(
-            'nombre_cargo' => $objeto->nombre_cargo,
-            'descripcion' => $objeto->descripcion,
-            'estado' => $objeto->estado,
-            'historias' => $objeto->historias,
-            'soporte' => $objeto->soporte,
-            'jefe' => $objeto->jefe,
-            'id_jefe' => $objeto->id_jefe
-        );
-    }
+    $categoria->setId($_POST['id']) ;
+    $dao->cargar($categoria);
+    $json[] = array(
+        'nombre' => $dao->objetos[0]->nombre,
+    );
     $jsonstring = json_encode($json[0]);
     echo $jsonstring;
 }
@@ -57,25 +44,58 @@ Agregar al objeto inicializado los valores necesarios para el proceso,
 luego se ejecuta la funcion requerida a traves del DAO
 */
 if ($_POST['funcion'] == 'crear') {
+    $error = false;
+    $type = "";
+    $mensaje="";
     $categoria->setNombre($_POST['nombre']);
-    $dao->crear($categoria);
+
+    if($dao->crear($categoria)){
+        $type = "success";
+        $mensaje = "Categoria creada correctamente";
+    }else{
+        $error = true;
+        $type = "error";
+        $mensaje = "Error al crear la categoria";
+    }
+
+    $respuesta[] = array(
+        'error' => $error,
+        'type' => $type,
+        'mensaje' => $mensaje,
+    );
+    $jsonstring = json_encode($respuesta);
+    echo $jsonstring;
 }
 
-// /* Este bloque de código verifica si el valor de la variable `['funcion']` es igual a
-// `'crear_modulo'`. Si es así, realiza las siguientes acciones:
-// Agregar al objeto inicializado los valores necesarios para el proceso, 
-// luego se ejecuta la funcion requerida a traves del DAO
-// */
-// if ($_POST['funcion'] == 'editar_cargo') {
-//     $cargo->setId($_POST['id']);
-//     $cargo->setNombreCargo($_POST['nombre_cargo']);
-//     $cargo->setDescripcion($_POST['descripcion']);
-//     $cargo->setEstado(1);
-//     $cargo->setHistorias($_POST['historias']);
-//     $cargo->setSoporte($_POST['soporte']);
-//     $cargo->setIdJefe($_POST['id_jefe']);
-//     $dao->editar_cargo($cargo);
-// }
+/* Este bloque de código verifica si el valor de la variable `['funcion']` es igual a
+`'crear_modulo'`. Si es así, realiza las siguientes acciones:
+Agregar al objeto inicializado los valores necesarios para el proceso, 
+luego se ejecuta la funcion requerida a traves del DAO
+*/
+if ($_POST['funcion'] == 'editar') {
+    $error = false;
+    $type = "";
+    $mensaje="";
+    $categoria->setNombre($_POST['nombre']);
+    $categoria->setId($_POST['id']);
+
+    if($dao->editar($categoria)){
+        $type = "success";
+        $mensaje = "Categoria creada correctamente";
+    }else{
+        $error = true;
+        $type = "error";
+        $mensaje = "Error al crear la categoria";
+    }
+
+    $respuesta[] = array(
+        'error' => $error,
+        'type' => $type,
+        'mensaje' => $mensaje,
+    );
+    $jsonstring = json_encode($respuesta);
+    echo $jsonstring;
+}
 
 // /* Este bloque de código está verificando si el valor de la variable `['funcion']` es igual a
 // `'cambiar_estado'`.  */

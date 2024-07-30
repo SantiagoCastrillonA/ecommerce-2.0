@@ -14,9 +14,9 @@ if ((isset($_SESSION['productos']['id']) ) || (isset($_SESSION['datos']) && $_SE
     <input type="hidden" id="txtTipoUsuario" value="<?= $_SESSION['datos'][0]->id_tipo_usuario ?>">
     <input type="hidden" id="txtCargoUsuario" value="<?= $_SESSION['datos'][0]->id_cargo ?>">
     <input type="hidden" id="txtEliminar" value="<?= $_SESSION['productos']['eliminar'] ?>">
-    <input type="hidden" id="txtEditar" value="<?= $_SESSION['productos']['editar'] ?>">
+    <input type="hidden" id="txtEditar" value="<?= $_SESSION['productos']['editar'] || (isset($_SESSION['datos']) && $_SESSION['datos'][0]->id_tipo_usuario <= 2)?"1":"0"?>">
     <input type="hidden" id="txtCrear" value="<?= $_SESSION['productos']['crear'] ?>">
-    <input type="hidden" id="txtVer" value="<?= $_SESSION['productos']['ver'] ?>">
+    <input type="hidden" id="txtVer" value="<?= $_SESSION['productos']['ver'] || (isset($_SESSION['datos']) && $_SESSION['datos'][0]->id_tipo_usuario <= 2)?"1":"0"?>">
 
     <?php
     if ($_SESSION['productos']['crear'] || (isset($_SESSION['datos']) && $_SESSION['datos'][0]->id_tipo_usuario <= 2)) {
@@ -54,7 +54,7 @@ if ((isset($_SESSION['productos']['id']) ) || (isset($_SESSION['datos']) && $_SE
                         <h5 class="modal-title" id="exampleModalLabel">Editar Categoria</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="color: white;"></button>
                     </div>
-                    <form id="form_editar_categoria">
+                    <form id="form_editar_categoria" >
                         <div class="modal-body">
                             <div class="div form-group">
                                 <label for="txtNombre2">Nombre Categoria</label>

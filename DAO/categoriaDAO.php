@@ -21,13 +21,13 @@ class CategoriadDAO
     {
         if (!empty($_POST['consulta'])) {
             $consulta = $_POST['consulta'];
-            $sql = "SELECT C.*, CJ.nombre_cargo AS jefe FROM cargos  C JOIN cargos CJ ON C.id_jefe = CJ.id WHERE C.nombre_cargo LIKE :consulta AND C.id>1";
+            $sql = "select * from categoria_producto cp where cp.nombre like :consulta order by cp.nombre asc";
             $query = $this->acceso->prepare($sql);
             $query->execute(array(':consulta' => "%$consulta%"));
             $this->objetos = $query->fetchall();
             return $this->objetos;
         } else {
-            $sql = "SELECT C.*, CJ.nombre_cargo AS jefe FROM cargos C JOIN cargos  CJ ON C.id_jefe = CJ.id WHERE C.nombre_cargo NOT LIKE '' AND C.id>1 ORDER BY C.nombre_cargo ASC";
+            $sql = "select * from categoria_producto cp order by cp.nombre ASC";
             $query = $this->acceso->prepare($sql);
             $query->execute();
             $this->objetos = $query->fetchall();
@@ -36,15 +36,15 @@ class CategoriadDAO
     }
 
     /**
-     * La función "cargarCargo" recupera un objeto de carga de la base de datos en función de su ID.
+     * La función "categoriaProducto" recupera un objeto de carga de la base de datos en función de su ID.
      * 
      * @param Cargo obj El parámetro "obj" es una instancia de la clase "Cargo".
      * 
      * @return una serie de objetos de tipo "Carga".
      */
-    function cargarCargo(Cargo $obj)
+    function cargar(CategoriaProducto $obj)
     {
-        $sql = "SELECT C.*, CJ.nombre_cargo AS jefe FROM cargos C JOIN cargos  CJ ON C.id_jefe = CJ.id WHERE C.id=:id";
+        $sql = "select * from categoria_producto cp where cp.id = :id";
         $query = $this->acceso->prepare($sql);
         $query->execute(array(':id' => $obj->getId()));
         $this->objetos = $query->fetchall();
@@ -59,14 +59,14 @@ class CategoriadDAO
      * detalles de la carga que deben actualizarse en la base de datos. El objeto debe tener las
      * siguientes propiedades:
      */
-    function editar_cargo(Cargo $obj)
+    function editar(CategoriaProducto $obj)
     {
-        $sql = "UPDATE cargos SET nombre_cargo=:nombre_cargo, descripcion=:descripcion, historias=:historias, soporte=:soporte, estado=:estado, id_jefe=:id_jefe WHERE id=:id";
+        $sql = "update categoria_producto c set c.nombre = :nombre where c.id =:id";
         $query = $this->acceso->prepare($sql);
-        if ($query->execute(array(':id' => $obj->getId(), ':nombre_cargo' => $obj->getNombreCargo(), ':descripcion' => $obj->getDescripcion(), ':historias' => $obj->getHistorias(), ':soporte' => $obj->getSoporte(),':estado' => $obj->getEstado(), ':id_jefe' => $obj->getIdJefe()))) {
-            echo 'update';
+        if ($query->execute(array(':id' => $obj->getId(), ':nombre' => $obj->getNombre()))) {
+            return true;
         } else {
-            echo 'Error al actualizar el cargo';
+            return false;
         }
     }
 

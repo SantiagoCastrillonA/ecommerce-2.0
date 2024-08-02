@@ -68,7 +68,8 @@ $(document).ready(function () {
 
     /**
      * Activa una función cuando se hace clic en un botón con la clase "editCargo".
-     * Recupera datos del elemento en el que se hizo clic, envía una solicitud al servidor para obtener datos adicionales,
+     * Recupera datos del elemento en el que se hizo clic, envía una solicitud al servidor para
+     * obtener datos adicionales,
      * y actualiza los valores de ciertos campos de entrada según la respuesta.
      * 
      * @param {object} e - The click event object.
